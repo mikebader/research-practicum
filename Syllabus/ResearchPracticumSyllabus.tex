@@ -1,0 +1,243 @@
+\documentclass[11pt]{syllabus}
+
+\newcommand{\R}{\textsf{R}}
+\newcommand{\RStudio}{\textsf{RStudio}}
+\newcommand{\dcas}{\textsc{dcas2018}}
+
+\coursenumber{SOCY 625}
+\term{Spring 2017}
+\classtime{Monday 5:30-8:00pm}
+\classroom{Watkins G-12}
+\coursename{Practicum in Sociological Research: Issues in Health, Risk, Society}
+
+\author{Michael Bader}
+\email{\href{mailto:bader@american.edu}{bader@american.edu}}
+\office{Watkins G-13}
+
+\usepackage[utf8x]{inputenc}
+%
+\begin{document}
+\maketitle 
+
+\section{Office Hours}
+Mondays 3:00-4:30pm, or by appointment \\
+Please make an appointment at \url{http://mikebader.net/officehours}. 
+
+I am happy to talk by phone or meet in my office. If you would like to speak by phone, please include your phone number in the appointment and send me an e-mail letting me know that you would like to meet by phone. As a general rule, I cannot meet before class because I need time to prepare (which might often include eating) and I can occasionally schedule short meetings after class (but I will also want to get to bed and become increasingly grumpy as the night progresses). 
+
+\section{Course Description}
+You will learn the theory and practice of survey methods research by participating in the process of fielding a survey to a representative sample of Washington, DC-area residents. In the course, you will learn about survey design, sampling, question wording, and basic inference from sample data. We will focus in particular on common pitfalls that come about in the process of designing surveys. 
+
+The course will follow the process used by professional researchers designing surveys for research purposes. In fact, you will be involved in the design of the 2018 DC Area Survey. You will take a theoretical construct, determine how to measure that construct using questions on a survey, and advocate for why such a construct should be included on the survey. The process will expose you to each phase of fielding a survey. 
+
+We will discuss basic data management techniques and best practices for documenting data. I will introduce you to statistical software that you use to document data and, in the future, analyze the data that we collect. 
+
+This course is the second in the sequence of the ``practicum experience'' in the Masters of Arts in Sociology Research and Practice. I expect that students have passed a basic statistics course such as SOCY~621.
+
+\begin{objectives}
+\item explain the principles of survey design including question design, sampling, statistical inference, and sources of error;
+\item develop and test questions to answer a specific research hypothesis; 
+\item advocate for inclusion of measures on surveys using a scientific justification; and
+\item conduct basic data management tasks and descriptive analysis in \textsf{R}
+\end{objectives}
+
+\section{Classroom Policies}
+\showpolicies
+
+\section{Accommodations \& Academic Support}
+\showresources
+
+\section{Assignments \& Grading}
+\subsection{Assignments}
+\begin{description}
+\item[Question Proposal (20\% each)] Over the course of the semester, you will advocate to include your research topic and questions on the \dcas\ at three workshops: 
+\begin{itemize}
+\item \textbf{February 19:} Pitch a concept to be included in the \dcas
+\item \textbf{March 26:} Advocate for questions to be included in the \dcas
+\item \textbf{May 7:} Present a research plan to analyze data from the \dcas
+\end{itemize}
+
+For each workshop, you will write a memo to explain the rationale for your research idea, question, or design. You will distribute this to the class the week before and you will read your colleague's memos before coming to class. You will then come prepared to advocate for your ideas during class on the day of the workshop. A complete description of each assignment will be distributed on the first week of class. 
+
+\item[Weekly Exercises (30\%)] Each week you will be given a series of exercises to complete. These will take different forms on different weeks, but will include some combination of answering questions about the readings, reflecting on what you have learned, applying lessons to your own research question, and exercises in \R. Exercises will be due by Sunday at 11:59pm on Blackboard. You will have the opportunity to revise each of your exercises one time if you submit the revision within one week of the original due date. Please plan to spend 2-3 hours on each exercise. No exercises will be due when we have workshops. 
+
+\item[Class Attendance \& Participation (10\%)] This class provides an opportunity to learn a valuable professional skill. You will learn the most if you actively engage during class by attending and asking questions. The material for this class accumulates over the course of the semester; missing a class will likely be detrimental to your understanding of the material the following week. If you are absent, you should get notes from a colleague and be sure that you understand the notes. 
+\end{description}
+
+%% Grades
+\showgrades
+
+
+\section{Required Text \& Software}
+\subsection{Text}
+\bibentry{groves_survey_2009}.
+
+\subsection{Software}
+We will use the statistical software \R\ in this class. \R\ is a programming language used for statistical analysis. In one sense it is like Stata, SPSS, or SAS. I know that you are more likely to have learned one of those three statistical software programs in your intro statistics class. \R\ is more difficult to learn than those three software programs. The difficulty of learning is offset by several advantages: 
+
+\begin{itemize}
+\item Most importantly, \R\ is \textbf{free}. \R\ is open source software which means that it is free as in beer and as in speech. This means that as long as you have a computer, you will have access to the software. Since many students plan to go onto work at organizations that might not have large research budgets, this means that you will be able to use the software wherever you go. 
+\item \R\ is also becoming the standard for statistical software in the field. In the coming five to ten years, more employers will require new hires to know \R. Exposure to it now will help you gain those skills and be ahead of the learning curve. 
+\item Other programs focus only on statistics while \R\ offers a full-fledged programming language. For much of what we do in this class, that will be unimportant. If, however, you ever want to do things like text processing, scraping websites, or downloading hashtags or tweets, \R\ already has libraries to do that easily. 
+\item \R\ has the best graphics of any software program available. 
+\end{itemize}
+
+In addition to \R\, we will use \RStudio. \RStudio\ is an \textsl{integrated development environment}, or IDE, for \R. \RStudio\ offers a graphical user interface that makes \R\ easier to use and makes it more like the types of statistical programs to which you are familiar. 
+
+You may download both \R\ and \RStudio: 
+\begin{enumerate}
+\item Download \R\ first; visit \url{http://mirrors.nics.utk.edu/cran/} and select the correct version for your operating system
+\item Then download \RStudio\ here \url{https://www.rstudio.com/products/RStudio/#Desktop}
+\end{enumerate}
+
+\section{Schedule}
+
+\subsection{Using Surveys for Research}
+%% Week 1
+\week[January 22]{Introduction to Survey Methods}
+%% Objectives: 
+%%   Define statistics and parameters
+%%   Enumerate types of questions that can be answered using survey methods
+%%   Define terms related to survey methods
+%%   Introduce R
+\begin{readings}
+\item \reading{groves_survey_2009}{Chapter 1}.
+\end{readings}
+
+%% Week 2
+\week[January 29]{Inference and Error in Surveys}
+%% Objectives:
+%%   Describe the workflow of a survey research project
+%%   Identify sources of error in survey research
+%%   Differentiate between measurement error and deviation from a model
+%%   Explain relationship between statistics and parameters
+\begin{readings}
+\item \reading{groves_survey_2009}{Chapter 2}. 
+\item \bibentry{king_restructuring_2014}
+\item \bibentry{prewitt_us_2000}, \textit{recommended}
+\end{readings}
+
+%% Week 3
+\week[February 5]{Target Populations and Survey Coverage}
+%% Objectives:
+%%   Define a target population
+%%   Describe appropriate target populations for different studies
+%%   Explain how we characterize populations with surveys
+\begin{readings}
+\item \reading{groves_survey_2009}{Chapter 3}. 
+\item \bibentry{burnham_mortality_2006}. (you might also wish to listen to the This American Life podcast about this study: \url{https://www.thisamericanlife.org/320/whats-in-a-number-2006-edition})
+\item \bibentry{dardagan_reality_2006} (available at: \url{https://www.iraqbodycount.org/analysis/beyond/reality-checks/1}).
+%\item This American Life episode on Iraq war survey
+\end{readings}
+
+%% Week 4
+\week[February 12]{DC Population \& Demographic Characteristics}
+%% Objectives
+%%   Summarize characteristics of DC Area residents
+\begin{readings}
+\item \bibentry{bader_diversity_2016}. Available at: \url{https://papers.ssrn.com/abstract=2846003}
+\item \bibentry{mora_cross-field_2014}
+\end{readings}
+
+%% Week 5
+\week[February 19]{WORKSHOP: Pitch ideas for inclusion in \dcas}
+
+\subsection{Designing High Quality Instruments}
+%% Week 6
+\week[February 26]{Questions \& Answers in Surveys}
+%% Objectives
+%%   Describe how surveys are like conversations and how they are not
+%%   List problems that frequently arise in surveys
+%%   Explain how survey questions measure constructs and concepts
+\begin{readings}
+\item \reading{groves_survey_2009}{Pages 183-191, 208-210, and Chapter 7}.
+\end{readings}
+
+%% Week 7
+\week[March 5]{Evaluating Survey Questions}
+%% Objectives 
+%%   Conduct cognitive interviews for survey questions
+%%   Identify and fix common problems with survey questions
+\begin{readings}
+\item \reading{groves_survey_2009}{Chapter 8}.
+\item \bibentry{schaeffer_science_2003}
+\end{readings}
+
+\vspace{.5\baselineskip}
+\noindent \textbf{\textsc{Spring Break: No class March 12}}
+
+%% Week 8
+\week[March 19]{Methods of Data Collection}
+%% Objectives
+%%   Enumerate advantages and disadvantages of different survey collection methods
+%%   Explain potential problems the \dcas will face
+\begin{readings}
+\item \reading{groves_survey_2009}{Chapter 5}.
+\item \bibentry{couper_new_2017}
+\end{readings}
+
+%% Week 9
+\week[March 26]{WORKSHOP: Pitch questions for inclusion in \dcas}
+
+%% Week 10
+\week[April 2]{Ethics in Survey Design}
+%% Objectives
+%%   Enumerate specific ethical issues raised by surveys
+\begin{readings}
+\item \reading{groves_survey_2009}{Chapter 11}.
+\end{readings}
+
+\subsection{Data Collection \& Management}
+%% Week 11
+\week[April 9]{Non-Response}
+%% Objectives
+%%   Explain importance of non-response to survey estimates
+%%   Identify strategies to reduce unit and item nonresponse
+%%   Describe polling problems that occurred in 2016
+\begin{readings}
+\item \reading{groves_survey_2009}{Chapter 6}.
+\item \bibentry{keeter_whats_2007} (available at: \url{http://assets.pewresearch.org/wp-content/uploads/sites/12/old-assets/pdf/514.pdf}).
+\item \bibentry{aapor_evaluation_2017} (available at: \url{http://www.aapor.org/Education-Resources/Reports/An-Evaluation-of-2016-Election-Polls-in-the-U-S.aspx}).
+\end{readings}
+
+%% Week 12
+\week[April 16]{Post-Collection Data Processing}
+%% Objectives
+%%   Describe survey sampling and survey weights
+%%   Identify inconsistencies or outliers in data
+%%   Describe costs and benefits of coding methods
+%%   Describe the process of imputation
+\begin{readings}
+\item \reading{groves_survey_2009}{Chapter 10}.
+\end{readings}
+
+%% Week 13
+\week[April 23]{Data Documentation and Dissemination}
+%% Objectives
+%%   Define reproducible data analysis and replication
+%%   Enumerate key elements of data documentation
+%%   Produce quality data documentation
+\begin{readings}
+\item \bibentry{king_introduction_2007}
+\item \bibentry{freese_replication_2007}
+\item \bibentry{firebaugh_replication_2007}
+\end{readings}
+%http://stodden.net/icerm_report.pdf
+
+%% Week 14
+\week[April 30]{Reproducible Research}
+%% Objectives
+%%   Describe tenets of reproducibility
+\begin{readings}
+\item \bibentry{healy_plain_2017} (available at: \url{http://plain-text.co}).
+\end{readings}
+
+\vspace{.5\baselineskip}
+\noindent \textbf{\textsc{Final Workshop (Monday, May 7 5:30pm): Present a Research Plan}}
+
+
+\bibliographystyle{apalike}
+%\bibliographystyle{/Users/bader/work/Bibs/asr}
+\nobibliography{/Users/bader/work/Bibs/bib20100831}
+
+\end{document}
