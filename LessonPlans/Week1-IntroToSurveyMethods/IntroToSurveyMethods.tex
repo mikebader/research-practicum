@@ -1,0 +1,175 @@
+\documentclass[11pt]{lecturenotes}
+
+\title{Introduction to Survey Methods}
+\author{Michael Bader}
+\week{1}
+\lesson{1}
+\coursenumber{SOCY 625}
+\coursetitle{Practicum in Sociological Research}
+
+
+\begin{document}
+\maketitle
+
+\begin{objectives}{
+\item Define statistics and parameters
+\item Enumerate types of questions that can be answered using survey methods
+\item Define terms related to survey methods
+\item Introduce R}{
+\item Explain the principles of survey design including question design, sampling, statistical inference, and sources of error
+\item Conduct basic data management tasks and descriptive analysis in R
+}
+\end{objectives}
+
+\vspace{1em}
+\textbf{\textsc{Materials}}: \vspace{-\baselineskip}
+\begin{itemize}
+\item Copies of syllabus 
+\item Copies of assignment
+\item Computer with slides loaded
+\end{itemize}
+
+
+\section{What are Survey \emph{Methods}?}
+\subsection[5]{History}
+Initial efforts to characterize populations depended on talking with every person within a particular region. 
+
+\slide
+First effort of the kind was done by Charles Booth to document the experiences of the poor in London. 
+
+\slide
+W.E.B.\ DuBois undertook a similar effort in the old Seventh Ward of Philadelphia. He interviewed people in every household in the Seventh Ward to write \emph{The Philadelphia Negro}.
+
+\subsection[5]{Goal of Survey Methods}
+\slide
+The goal of survey research is to minimize \emph{avoidable} errors. 
+
+\slide
+\emph{What is Error?}\\
+There are two types of ``errors'' that we are concerned about in survey research:
+
+\begin{description}
+\item[Random variation] The first type of error is the ``error'' that you learned about in statistics. Groves et al. will refer to this type of error as \emph{statistical error}, but I think it's better to refer to it as random variation or deviation from a mean
+\item[Survey error] The other type of errors are \emph{measurement errors} introduced by the method through which we design the survey
+\end{description}
+
+Let's dig a little bit deeper into these two types of errors because it will be really important for understanding what it is that we are trying to do in survey research.
+
+\subsection[10]{Random Variation}
+\slide
+\emph{What is a Model?}\\
+A model is an abstract representation of a process that we use to distill important information. 
+
+The mean is the simplest idea of a model. When we want to characterize an entire population, we take the average value. For example, if we wanted to find a single number that represents the height of American adults, we would (in an ideal world) measure the height of every adult, sum the total number of inches across all American adults, and then divide by the total number of American adults.
+
+\slide
+Mathematically, we would write: \[\bar{x}=\frac{1}{N}\sum^N_{i=1}{x_i}\] 
+
+But, if we started with our model, the mean, we would say that any adult that we happened across would vary somewhat away from our model. That describes the \emph{deviation} or \emph{statistical error} of that person from our model. 
+
+\[x_i = \bar{x} - e_i\]
+
+In statistics, we refer to the $e_i$ as the ``error;'' but that's misleading because it's not that the measurement is wrong, it's the ``error'' of our analytic \emph{model}. Person $i$'s height is what it is; it just deviates from the underlying model. 
+
+When we get to analyzing data, we want to \emph{explain} as much of the deviation as possible. 
+
+\subsection[10]{Measurement Error} 
+\slide
+In contrast, the other type of error is error in our actual measurements. These are problems with our method that will lead to \emph{incorrect} answers because we messed up the measurement somehow. 
+
+These errors can be introduced at every stage of the design and implementation of the survey. In fact, this class will be a tour of all of the ways that surveys can go wrong and how to minimize the errors (or at least reduce the errors for a reasonable cost)
+
+One of the biggest problems with measurement errors is that they \emph{bias} our results. 
+
+\slide
+\concept{Bias}{Systematically over- or under-estimating the true underlying value}
+
+\slide
+Random errors are less of a problem than biased errors (just keep that in your head, you don't need to understand it now--just store it away somewhere up there).
+
+If we design the perfect survey, then we will only have random errors, we will not have biased errors.
+
+Unfortunately, it's impossible to eliminate measurement error in real life. Our goal is survey research is to \emph{reduce measurement error for a reasonable cost}. Much of what we will discuss in this class is the benefits and costs of reducing different forms of measurement error.
+
+\slide
+\textbf{Summary:}
+\begin{itemize}
+\item Statistical ``error'' is the deviation from a \emph{model}
+\item Survey ``error'' is an error in the \emph{survey}
+\end{itemize}
+
+\section{Components of Surveys}
+\subsection[10]{Samples}
+\slide
+\concept{Sample}{A sample is the group of entities (people) drawn from a population and measured in some way}
+
+\slide
+Different types of samples: 
+\begin{description}
+\item[Census] A researcher contacts every person in the population under investigation (DuBois)
+\item[Probability sample] A researcher takes a random sample of people from the population based on some predefined list of the population
+\item[Area probability sample] Researchers randomly sample \emph{areas} and then randomly sample people within that area; not as random as a simple probability sample, but much cheaper to execute. 
+\end{description}
+
+\slide
+\concept{Population}{The actual group of people that the survey researcher wants to characterize}
+
+\slide
+\concept{Sampling Frame}{The researcher's enumeration of the population}
+
+\slide
+Therefore, the sample that we discussed should \emph{describe the population} and will be \emph{drawn from the sampling frame}
+
+\subsection[5]{Surveys}
+Surveys are what we use to gather our data. We ask a predefined set of questions to a representative sample of respondents to see how they differ in their answers. 
+
+This offers an incredible opportunity. Many of the people who first developed the scientific basis for survey research talked about its incredible opportunity to be democratic, to find out what ``the masses'' thought. 
+
+
+\slide
+What had been done before that? The most prevalent method was to ask subscribers of various publications what they thought and to publish the results of those polls. That is how we ended up with the headlines that Dewey Defeats Truman. That was embarrassing, but imagine if your information for what the country needed or wanted was coming from those same biased sources? 
+
+
+\section{Using Surveys to Study Sociological Questions}
+\subsection[10]{Underlying Assumptions of Surveys}
+\slide
+$\rightarrow$What are the ontological and epistemological assumptions of survey research? 
+
+\begin{itemize}
+\item The question must be defined \emph{before} entering the field
+\item That we can define a population from which to sample
+\item That the sample represents the underlying population
+\item That we can generalize from a sample to a larger population 
+\end{itemize}
+
+
+\subsection[5]{Advantages \& Disadvantages}
+\textbf{Advantages:}
+
+We are able to generalize some sentiment to a population. 
+
+Able to measure the prevalence of attitudes and beliefs
+
+\textbf{Disadvantages:}
+
+We can't go in depth into the process; we ultimately have outcomes. 
+
+Those outcomes are \emph{self reported}.
+
+\subsection{Types of Sociological Questions}
+What type of sociological questions can we ask and/or answer with survey methods? 
+
+[Tell students a little bit about my own research]
+
+
+
+%\section{DC Area Survey}
+%\begin{itemize}
+%\item Background \slide
+%\item Purpose
+%\item Decisions
+%\item How I will use the data; how you can use the data
+%\end{itemize}
+
+
+\end{document}

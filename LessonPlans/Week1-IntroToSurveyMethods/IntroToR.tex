@@ -1,0 +1,170 @@
+\documentclass[11pt]{lecturenotes}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\title{Introduction to R}
+\author{Michael Bader}
+\week{1}
+\lesson{2}
+\coursenumber{SOCY 625}
+\coursetitle{Practicum in Sociological Research}
+
+
+\begin{document}
+\maketitle
+
+\begin{objectives}{
+\item Introduce R}{
+\item Conduct basic data management tasks and descriptive analysis in R
+}
+\end{objectives}
+
+\section{Introduce R}
+
+\subsection[5]{What is R?}
+R is both: 
+\begin{itemize}
+\item Statistical computing software
+\item Full-fledged programming language
+\end{itemize}
+
+\subsection[10]{Difference from Other Statistical Software}
+Other statistical software like Stata, SPSS, and SAS do one thing: they take a table (spreadsheet) of data and statistical commands to analyze that data. 
+
+R can do this, too. But R can do many more things because R is an entire programming language. It has many different types of data that you can use. You can put in a table (called a ``data frame'' in R-speak), but you have lots of other types of data that you can use. It offers much more flexibility than other statistical software. 
+
+BUT, that flexibility comes at the cost of simplicity. 
+
+\subsection[10]{Why R?}
+\slide
+So why make you learn something that's harder than what you have already learned? 
+\begin{itemize}
+\item R is open source, which means that many different people can help extend the language to do common tasks or specialized analysis
+\item R has a large user base, so there are lots of places to receive help online, e.g. \url{http://rseek.org/} and \href{https://stackoverflow.com/questions/tagged/r}{Stack Overflow}.
+\item R is the future of statistical software; employers will be increasingly moving to R 
+\item \slide R is free (as in beer); you can use it on any computer and with any employer. Many of you will be working for employers that might not have large budgets; learning free software means that you will always be able to use it. 
+
+\vspace{1em}
+
+\begin{center}
+\begin{tabular}{lrl} \toprule
+SAS\footnote{For SAS Analytics Pro \url{https://www.sas.com/en_us/software/analytics-pro.html}; January 20, 2018} & \$9,720.00 & + Windows only \\
+SPSS\footnote{\url{https://www.ibm.com/products/spss-statistics/pricing}; January 20, 2018} & \$99.00\slash month & + \$237.00/month add-ons \\
+Stata\footnote{Stata 15 government \& nonprofit pricing \url{https://www.stata.com/order/new/gov/single-user-licenses/dl/}; January 20, 2018} & \$1,695.00 & + \$300 for large datasets \\
+R & \$0.00 & \\ \bottomrule
+\end{tabular}
+\end{center}
+\end{itemize}
+
+We're talking about a substantial amount of money!
+
+\subsection[5]{Getting R}
+\sidenote{Show R command line}
+You will need to download R. Go to \url{https://www.r-project.org/} and look for the link that says ``Download.'' After you do that, you will be sent to a list of mirrors (servers that distribute R so that no single server gets overloaded). Find the United States and download one from that lists (I use the \href{https://mirrors.nics.utk.edu/cran/}{National Institute for Computational Sciences in Oak Ridge, TN}). 
+
+
+\subsection[20]{RStudio}
+If you open up R after downloading it, you will see that it gives you \emph{nothing} except a command line to type in commands to be run. This is not ideal and would make R \emph{really} difficult if that was the only way with which you could interact with R. 
+
+That is where RStudio comes in. RStudio is an \emph{Integrated Development Environment (IDE)} for R. That means that RStudio gives you a window into R--basically it acts as a gopher between you and R. 
+
+\sidenote{Show RStudio} 
+In acting as a gopher, it provides a nice \emph{graphical user interface (GUI)} that makes R a lot easier to use. 
+
+\slide
+There are four different windows in RStudio that you will use: 
+
+\begin{description}
+\item[Source (ctrl-1)] This is where you keep your scripts where you do your analysis. These are the same as \code{.do} files in Stata. 
+\item[Console (ctrl-2)] This is where you can type commands directly to tell R what to do. You should use this sparingly because only entering commands in the console makes it difficult to reproduce what you have done. My advice: work in the source window, then copy\slash paste into the console (or source the command directly by pressing `ctrl-Enter'---we'll get to that)
+\item[Environment] This window shows you all of the objects that are currently available in R. Remember how I told you that R can hold different types of data? This is where you will find all of them. A second tab in that window contains your history, which contains the list of commands that you have entered into the console. 
+\item[Viewer] This window is where you will view help files and plots that you make (you can view a whole bunch of other stuff down there, but those are for more advanced applications). 
+\end{description}
+
+\slide 
+To get RStudio, you will go to \url{https://www.rstudio.com/} and then find the link for RStudio and download. This software is also free. 
+
+\section{First Steps with R}
+\subsection[20]{Open Dataset}
+The first thing that we are going to do with R is to open up a dataset. I have uploaded the DCAS2016 data so that you can download it here {\bfseries [PUT LINK HERE]}
+
+The dataset is in \emph{comma separated values (csv)} format, which means that commas demarcate which data go in which cell. The first row of data contain the variable names. 
+
+I'm going to show you how to load the data two ways. First, I'm going to load the data directly from the internet. 
+
+\begin{verbatim}
+dcas <- read.csv(http://dcas.org,header=TRUE)
+\end{verbatim}
+
+Let's break this into parts: 
+
+\begin{itemize}
+\item \code{dcas}\\ This is the ``object'' that will hold the dataset that we load. If we ever want to refer to the dataset, we would need to reference its name, \code{dcas}, first.  One of the really cool things about R is that you can have multiple datasets open at the same time; that means, however, that you have to refer to the dataset that you want to use by its name. 
+\item \code{<-}\\ This arrow means ``assign'' what is to the right of the arrow the name that is to left of the arrow. The dataset that we load will therefore be assigned to the name \code{dcas}
+\item \code{read.csv()} \\
+This is a \emph{function}. You can tell that it is a function because it has parentheses after it. Inside the parentheses are different \emph{options} that you pass to the function. A function will then take those options and do something with them. 
+\item \code{http://dcas.org}\\
+ is a file that holds the data that we want. Even though we are getting it from the internet, it is still just a file. 
+\item \code{header=TRUE}\\
+ is a \emph{named option} called \code{header} that tells R whether the first row of the dataset contains the variable names. We set it to \code{TRUE}, so it does. 
+\end{itemize}
+
+We can check to see if it worked correctly by using the \code{head()} function. This will, by default, display the first five lines of data. 
+
+You might also want to use the \code{View()} function (note the capital `V') that will show you the entire data table in the Source window. 
+
+You did it! You loaded your first dataset into R!!!
+
+\subsection[10]{Loading Data from a Local File}
+The alternative way that you can open data is to first download the data and then open it from your local disk. 
+
+You should set up your directory structure. When you do, keep in mind that it's a lot easier to work with directories that do not have any spaces in the name. In other words: \slide
+
+\parskip 0pt
+\begin{verbatim}
+/Users/bader/My Documents/Homework/Homework 1.R
+\end{verbatim}
+
+Is worse than 
+
+\begin{verbatim}
+/Users/bader/work/Homework/Homework1.R
+\end{verbatim}
+
+\parskip \baselineskip
+
+Next, you will want to set the ``working directory,'' the directory into which R will automatically save anything that you create in your code. Setting this helps you keep track of where your files are and keeps your files clean because you don't need to write a long file path name every time you do something. 
+
+\begin{verbatim}
+DIR <- '/Users/bader/work/SOCY625/Homeworks/Homework1'
+setwd(DIR)
+\end{verbatim}
+\normalsize
+
+If you download the data into the same directory, you can now just use the filename to open the data: 
+
+\begin{verbatim}
+dcas <- read.csv('dcas2016.csv')
+\end{verbatim}
+
+The following would also work, but is much less readable and would require that anything that you do you add the directory to the beginning of the filename
+
+\begin{verbatim}
+dcas <- read.csv('/Users/bader/work/SOCY625/Homeworks/Homework1/dcas2016.csv')
+\end{verbatim}
+
+Now you have loaded the data two different ways!
+
+For homework this week, you will download R, RStudio, and load this data. Save the code in a file with the extension \code{.R} and you will submit that with your homework. 
+
+\section{Homework}
+\begin{itemize}
+\item Groves, et al.\ pp.\ 36 \& 37: answer \textbf{one of} Questions 1-6 and Questions 7 \& 9 (three questions total)
+\item Groves, et al.\ pp.\ 65-67: answer  Questions 1(a-c), 2, 4, 5 (pick four from a-i), \& 6 (pick four from a-k)
+\item Download R and RStudio
+\item Load DCAS2016 data from the web and from a local file (submit R scripts)
+\end{itemize}
+
+
+
+\end{document}
