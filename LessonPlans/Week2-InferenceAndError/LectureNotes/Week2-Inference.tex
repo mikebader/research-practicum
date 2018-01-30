@@ -1,0 +1,196 @@
+\documentclass[11pt]{lecturenotes}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+
+\title{Inference and Error in Survey Design}
+\author{Michael Bader}
+\week{2}
+\lesson{1}
+\coursenumber{SOCY 625}
+\coursetitle{Practicum in Sociological Research}
+
+
+\begin{document}
+\maketitle
+
+\begin{objectives}{
+\item Describe the process of collecting data with surveys
+\item Define the two types of inference in survey research
+\item Identify and explain sources of error in surveys 
+\item Explain the concept of survey error}{
+\item explain the principles of survey design including question design, sampling, statistical inference, and sources of error;
+\item develop and test questions to answer a specific research hypothesis; 
+}
+\end{objectives}
+
+\section[10]{Review}
+Any questions from last week? 
+
+\section{Inference}
+\slide
+\concept{Inference}{``Formal logic that permits description of unobserved phenomena based on observed phenomena.'' (Groves, et al., 40}
+
+\subsection[7.5]{Types of Inference}
+\marginpar{\vspace{1em} \itshape \raggedleft Slide}
+\begin{description}
+\item[Inference by Representation:] One inference comes from the fact that we only measure a small fraction of the population that we care about. 
+\begin{itemize}
+\item We cannot \emph{observe} the entire population (in most cases), but we can \emph{infer} aspects of the population based on a well-designed and executed sample. 
+\item Therefore, we need to \emph{infer} from the sample of respondents what the truth is across an entire population
+\item To do this, we rely on probability theory and statistics, but we will come back to that. 
+\end{itemize}
+\item[Inference by Measurement:] Another inference comes from trying to measure the ``unobserved phenomena'' inside people's heads. 
+\end{description}
+
+\section{Measurement Inference}
+\subsection[10]{Defining Measurement Inference}
+Let's think about the things that we want to study and make claims about: attitudes, beliefs, perceptions and opinions
+
+\slide
+\emph{Examples:} How traumatized are black students about racist events? How open to ``alternative'' sexual experiences are people? How much patriotism or nationalism do people feel? 
+
+\slide
+\concept{construct}{elements of information that are sought by the researcher (Groves, et al., 41)}
+
+\slide
+Go back to examples from above; what are the constructs? (trauma, openness, patriotism\slash nationalism)
+
+How often might you have had a difficult time expressing yourself and your own feelings, attitudes, or beliefs about a subject? Are they real? Are they always easy to communicate? Now try to imagine getting those real but unobservable thoughts from an entire population. 
+
+\slide
+\begin{center}
+\begin{tikzpicture}[scale=1]
+\node [left] at (0,0) {Construct};
+\draw [-{Latex[length=2mm]}, thick] (0,0) -- (3,0);
+\node [right] at (3,0) {Question};
+\node [align=left, right]  at (4,-1) {\small Something gets lost\\in translation};
+\path [-Latex] (4,-1) edge [bend left=30] (1.5,0) {};
+\draw [red,dashed] (1.5,0) ellipse (1.5 and .5);
+\node [align=center,below,red] at (1.5,-.5) {Inference};
+\end{tikzpicture}
+\end{center}
+
+Since we can't extract thoughts, emotions, attitudes, or opinions from people's heads, we are forced to \emph{infer} what those thoughts, emotions, attitudes, or opinions are. 
+
+\subsection[20]{Validity \& Reliability}
+\slide
+\concept{validity}{The accuracy with which our measures reflect the true underlying value}
+
+\slide
+Therefore, \emph{construct validity} refers to the degree that our measures (questions on a survey) measure the true underlying information sought by the researcher. 
+
+Going back to our picture: the less that gets lost in translation, the \emph{better our inference} and the \emph{higher the construct validity}
+
+\slide
+\begin{center}
+\begin{tikzpicture}[scale=1]
+\node [left] at (0,0) {Construct};
+\draw [-{Latex[length=2mm]}, thick] (0,0) -- (3,0);
+\node [right] at (3,0) {Question};
+\node [align=left, right]  at (4,-1) {\small Validity: \emph{how much} gets lost\\in translation};
+\path [-Latex] (4,-1) edge [bend left=30] (1.5,0) {};
+\draw [red,dashed] (1.5,0) ellipse (1.5 and .5);
+\node [align=center,below,red] at (1.5,-.5) {Inference};
+\end{tikzpicture}
+\end{center}
+
+A problem: we can't \emph{measure} the construct, hence the inference. If we can't measure the construct, how do we know if our measure is valid? We could examine wither the measures that we collect ``move with'' (are correlated with) other variables in the predicted direction, if we ask people over and over again do they give the same result, does our rank-order confirm other types of data collection?
+
+This is where \emph{psychometrics} comes in: the branch of social science that studies measurement
+
+\slide
+\[
+\left.
+\begin{array}{l}
+\text{I ask you one question} \\
+\text{I ask you five questions}
+\end{array}\right\} \text{Which measures apptitude better?}
+\]
+
+Each \emph{item} has error. Ideally, it will be small; but averaging across items measuring the same construct will reduce the error (since the mean minimizes error)
+
+A related idea is how stable the measures are from different trials within the same person.
+
+\slide
+\concept{reliability}{How closely repeated measurements of the same construct yield the same result}
+
+If you take a test one day and take the exact same test the next day (without studying in between), will you get different scores? Probably a little bit 
+
+Has your ability changed between the two days? Probably not
+
+The larger the difference between tests (trials) within individuals across a population of people, the lower the reliability of the measure. 
+
+\slide
+\begin{center}
+\begin{tabular}{rp{3in}}
+\textbf{reliability} & degree to which measurement of the same construct yields the same answer over repeated trials \emph{with the same person}\\[.5em]
+\textbf{validity} & degree to which the measure accurately represents the underlying construct
+\end{tabular}
+\end{center}
+
+The importance of the reliability and the validity of measures depends, to a large degree, on the purpose of the study
+
+\slide
+\textbf{\textsc{It is really, really important that measurement error should not be biased!!!}}
+
+\section[5]{Representational Inference}
+The other set of inference that we must use to characterize \emph{a population} is how we represent that population with \emph{a sample}.
+
+\slide
+\begin{center}
+\begin{tikzpicture}[scale=1]
+\node [left] at (0,0) {Population};
+\draw [-{Latex[length=2mm]}, thick] (0,0) -- (3,0);
+\node [right] at (3,0) {Sample};
+\node [align=left, right]  at (4,-1) {\small Some people are\\ not measured};
+\path [-Latex] (4,-1) edge [bend left=30] (1.5,0) {};
+\draw [red,dashed] (1.5,0) ellipse (1.5 and .5);
+\node [align=center,below,red] at (1.5,-.5) {Inference};
+\end{tikzpicture}
+\end{center}
+
+We do have a set of tools, probability and statistics, designed to handle this set of inference so that we can take a sample of people and make claims about the larger population from which they were drawn. 
+
+We want to make sure that the sample \emph{represents} as similar of a cross-section of the population, within known parameters, as we possibly can. 
+
+Validity in this inference will come from our ability to design and conduct a proper sample, and to interview the people we do sample. 
+
+\section[10]{Summary}
+\slide
+\begin{itemize}
+\item Inference: measuring unobservable phenomena with observed items
+\item Measurement inference involves trying to measure the unobserved phenomena as closely as possible
+\begin{itemize}
+\item The more closely we measure the true underlying phenomenon, the more valid our measures
+\item The more we can trust a measure taken at one time represents the possible measures given under the same conditions, the more reliable our measures
+\end{itemize}
+\item Representational Inference involves trying to characterize a population with a sample
+\end{itemize}
+
+Here is the picture that Groves, et al. used to illustrate the two paths of inference. 
+
+\clearpage
+On the left we have the measurement. The process of asking \& answering questions. Inference goes from response to construct (we \emph{infer} the construct based on responses). 
+
+On the right we have representation. The process of deciding who to ask about the constructs. Inference goes from target (we \emph{infer} the population level of some construct based on our adjusted set of respondents)
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics{../images/GrovesCh2Fig2.pdf}
+\end{center}
+\end{figure}
+%
+%
+%
+%\section{Homework}
+%\begin{itemize}
+%\item Groves, et al.\ pp.\ 36 \& 37: answer \textbf{one of} Questions 1-6 and Questions 7 \& 9 (three questions total)
+%\item Groves, et al.\ pp.\ 65-67: answer  Questions 1(a-c), 2, 4, 5 (pick four from a-i), \& 6 (pick four from a-k)
+%\item Download R and RStudio
+%\item Load DCAS2016 data from the web and from a local file (submit R scripts)
+%\end{itemize}
+
+
+
+\end{document}

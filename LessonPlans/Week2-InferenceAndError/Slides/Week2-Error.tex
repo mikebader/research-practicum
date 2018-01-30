@@ -1,0 +1,249 @@
+\documentclass[]{beamer}
+%\documentclass{article}
+%\usepackage{beamerarticle}
+
+\mode<presentation>
+{
+  \usetheme{Warsaw}
+  % or ...
+
+  \setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+}
+
+
+\usepackage[english]{babel}
+% or whatever
+
+\usepackage[utf8]{inputenc}
+% or whatever
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                         PACKAGES                      %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{hyperref,ctable}
+\usepackage{graphicx}
+\usepackage{tikz}                    % For flowchart
+\usetikzlibrary{shapes,arrows} % For flowchart
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           COLORS                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%AU COLORS
+\definecolor{aublue}{RGB}{25,33,129}
+\definecolor{aured}{RGB}{244,28,31}
+
+%Red
+%\setbeamercolor{titlelike}{bg=aured,fg=white}
+\setbeamercolor{structure}{bg=black!25!aured, fg=aured}
+%\setbeamercolor*{palette primary}{fg=white,bg=aured}
+%\setbeamercolor*{palette quaternary}{fg=white,bg=aublue}
+
+%Blue
+\setbeamercolor{titlelike}{bg=aublue,fg=white}
+%\setbeamercolor{structure}{bg=black!25!aublue, fg=aublue}
+\setbeamercolor*{palette primary}{fg=white,bg=aublue}
+\setbeamercolor*{palette quaternary}{fg=white,bg=black!75!aublue}
+
+\setbeamercolor{local structure}{fg=aured,bg=gray!60!aured}
+\setbeamercolor{alerted text}{fg=aured}
+
+\newenvironment{concept}[1]%
+	{
+	\setbeamercolor{background canvas}{bg=aured!10!white}%
+	\setbeamercolor{frametitle}{bg=aured}%
+	\setbeamercolor{frametitle right}{bg=aured}
+	\setbeamercolor{alerted text}{fg=aured}%
+	\begin{frame}{Concept}%
+	\alert{\bfseries \large #1\\[2em]}}{%
+	\end{frame}%
+	}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                         GRAPHICS                       %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\graphicspath{{/Users/bader/work/Presentations/Images/}}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                        COMMANDS                       %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\strong}[1]{\textbf{#1}}
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                     PRESENTATION                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Error}
+
+\author[Bader--SOCY 625]
+{Michael D.~M.~Bader}
+
+\institute 
+{
+  Practicum in Sociological Research (SOCY 625)
+}
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+
+\date % (optional)
+{Week 2}
+
+\subject{Practicum in Sociological Research Slides}
+% This is only inserted into the PDF information catalog. Can be left
+% out.
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+%\logo{\includegraphics[height=1cm]{../../Images/au_logo_50by51px}}
+%\logo{\includegraphics[height=1cm]{../../Images/au_logoname_300}}
+\logo{\includegraphics[height=1cm]{/Users/bader/work/Presentations/Images/au_logoname_300}}
+
+\subject{Intro to Survey Methods}
+% This is only inserted into the PDF information catalog. Can be left
+% out. 
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+% \pgfdeclareimage[height=0.5cm]{university-logo}{university-logo-filename}
+% \logo{\pgfuseimage{university-logo}}
+
+
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+%\AtBeginSubsection[]
+%{
+%  \begin{frame}<beamer>{Outline}
+%    \tableofcontents[currentsection,currentsubsection]
+%  \end{frame}
+%}
+
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command: 
+
+%\beamerdefaultoverlayspecification{<+->}
+
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[height=7cm]{../images/GrovesCh2Fig2.pdf}
+\end{center}
+\end{figure}
+\end{frame}
+
+\section{Error in Measurement}
+
+\begin{frame}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[height=7cm]{../images/GrovesCh2Fig2Measurement.pdf}
+\end{center}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Components of Measurement}
+\begin{description}
+\item[Construct] True concept of interest \pause
+\item[Measurement] How we attempt to assess the construct and turn it into data (e.g.\ survey questions) \pause
+\item[Response] How people that we survey actually answer the items (questions) that we use to measure the construct \pause
+\item[Edited response] How we modify responses to put them into a form so that we can analyze the constructs across a population \pause
+\begin{description}
+\item[Field editing] Checking or coding responses while the survey is being conducted
+\item[Coding] Putting collected data into units or values that can be measured (almost always done after field period is complete)
+\end{description}
+\end{description}
+\end{frame}
+
+\begin{frame}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[height=7cm]{../images/GrovesCh2Fig2Measurement.pdf}
+\end{center}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Measurement Errors}
+\begin{description}
+\item[Validity errors] \textit{(between Construct \& Measurement)} discussed above
+\item[Measurement error] \textit{(between Measurement \& Response)} Construct \emph{can} be validly measured with the items (questions), but respondents do not answer the question as the question was intended to answer (e.g., missing the question $2+2$ does not make the question invalid, but measurement error would be the result of an arithmetic mistake)
+\item[Processing error] \textit{(between Response \& Edited response)} Coding or data entry errors, or the codes that we create don't represent what the respondents intended
+\end{description}
+\end{frame}
+
+\section{Error in Representation}
+
+\begin{frame}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[height=7cm]{../images/GrovesCh2Fig2Representation.pdf}
+\end{center}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Components of Representation}
+\begin{description}
+\item[Target population] The real body of people whom we want to represent \pause
+\item[Sampling frame] Enumeration of target population from which we draw our sample of respondents \pause
+\item[Sample] Units \emph{selected} to be part of the survey \pause
+\item[Respondents] Units\slash people who \emph{respond} to the survey \pause
+\item[Post-survey adjustments] Weighting used to make \emph{respondents} represent the \emph{target population} 
+\end{description}
+\end{frame}
+
+\begin{frame}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[height=7cm]{../images/GrovesCh2Fig2Representation.pdf}
+\end{center}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Errors of Representation}
+\begin{description}
+\item[Coverage error] \textit{(between Target Population \& Sampling Frame)} Error introduced by not including people in the sampling frame, but who should be in the sampling frame (i.e., eligible to be included in the sample but not)
+\item[Sampling error] \textit{(between Sampling Frame \& Sample)} we will come back to this
+\item[Response error] \textit{(between Sample \& Respondents)} error introduced by people who did not respond to interview requests even though they were sampled
+\item[Adjustment error] \textit{(between Respondents \& Post-survey adjustments)} Errors introduced by not properly weighting the responses received back to the target population
+\end{description}
+\end{frame}
+
+
+
+
+
+\end{document}
+
+

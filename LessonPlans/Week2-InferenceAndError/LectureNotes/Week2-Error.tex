@@ -1,0 +1,143 @@
+\documentclass[11pt]{lecturenotes}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\title{Error in Survey Design}
+\author{Michael Bader}
+\week{2}
+\lesson{2}
+\coursenumber{SOCY 625}
+\coursetitle{Practicum in Sociological Research}
+
+
+\begin{document}
+\maketitle
+
+\begin{objectives}{
+\item Identify and explain sources of error in surveys 
+\item Explain the concept of survey error}{
+\item explain the principles of survey design including question design, sampling, statistical inference, and sources of error;
+\item develop and test questions to answer a specific research hypothesis; 
+}
+\end{objectives}
+
+\section[5]{Errors in Survey Design}
+\slide
+Groves, et al.\ conceptualized the two paths of inference in Figure 2.2. 
+
+On the left we have the measurement. The process of asking \& answering questions. Inference goes from response to construct (we \emph{infer} the construct based on responses). 
+
+On the right we have representation. The process of deciding who to ask about the constructs. Inference goes from target (we \emph{infer} the population level of some construct based on our adjusted set of respondents)
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics{../images/GrovesCh2Fig2.pdf}
+\end{center}
+\end{figure}
+
+On each side, they discuss where errors creep into the process and so we will go through those now. 
+
+\clearpage
+
+\section{Error in Measurement}
+\slide
+Let's go through the measurement side (left side) of the figure and define each of these terms and see where error comes into play. 
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=.7]{../images/GrovesCh2Fig2Measurement.pdf}
+\end{center}
+\end{figure}
+
+\slide
+\vspace{-2em}
+\subsection[5]{Components of Measurement}
+\begin{description}
+\item[Construct] True concept of interest
+\item[Measurement] How we attempt to assess the construct and turn it into data (e.g.\ survey questions)
+\item[Response] How people that we survey actually answer the items (questions) that we use to measure the construct
+\item[Edited response] How we modify responses to put them into a form so that we can analyze the constructs across a population
+\begin{description}
+\item[Field editing] Checking or coding responses while the survey is being conducted
+\item[Coding] Putting collected data into units or values that can be measured (almost always done after field period is complete)
+\end{description}
+\end{description}
+\vspace{-1em}
+Careful design considerations go into each of each of these steps. 
+
+\subsection[10]{Errors in Measurement}
+\slide
+Errors exist every time we move from one step to the next
+
+\begin{description}
+\item[Validity errors] \textit{(between Construct \& Measurement)} discussed above
+\item[Measurement error] \textit{(between Measurement \& Response)} Construct \emph{can} be validly measured with the items (questions), but respondents do not answer the question as the question was intended to answer (e.g., missing the question $2+2$ does not make the question invalid, but measurement error would be the result of an arithmetic mistake)
+\item[Processing error] \textit{(between Response \& Edited response)} Coding or data entry errors, or the codes that we create don't represent what the respondents intended
+\end{description}
+\textbf{validity errors} -- those that we just discussed
+
+\clearpage
+
+\section{Error in Representation}
+\slide
+Now let's turn to the representation (right) side of the figure. To repeat what I said before: 
+
+On the right we have representation. The process of deciding who to ask about the constructs. Inference goes from target (we \emph{infer} the population level of some construct based on our adjusted set of respondents)
+
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=.7]{../images/GrovesCh2Fig2Representation.pdf}
+\end{center}
+\end{figure}
+
+\subsection[5]{Components of Representation}
+\slide
+\begin{description}
+\item[Target population] The real body of people whom we want to represent
+\item[Sampling frame] Enumeration of target population from which we draw our sample of respondents
+\item[Sample] Units \emph{selected} to be part of the survey
+\item[Respondents] Units\slash people who \emph{respond} to the survey
+\item[Post-survey adjustments] Weighting used to make \emph{respondents} represent the \emph{target population}
+\end{description}
+
+\subsection[10]{Errors of Representation}
+\slide
+\begin{description}
+\item[Coverage error] \textit{(between Target Population \& Sampling Frame)} Error introduced by not including people in the sampling frame, but who should be in the sampling frame (i.e., eligible to be included in the sample but not)
+\item[Sampling error] \textit{(between Sampling Frame \& Sample)} we will come back to this
+\item[Response error] \textit{(between Sample \& Respondents)} error introduced by people who did not respond to interview requests even though they were sampled
+\item[Adjustment error] \textit{(between Respondents \& Post-survey adjustments)} Errors introduced by not properly weighting the responses received back to the target population
+\end{description}
+
+\clearpage
+\section[25]{Sampling Error}
+\clearpage
+
+\section[20]{Descriptive Statistics in R}
+
+See sheet with R notebook containing exercise.
+
+
+
+
+
+
+
+
+
+
+\section[5]{Homework}
+Please be sure to use Piazza for discussions. I \emph{will not} answer questions this week unless classmates attempt to answer the questions first. I will post the slides and a handout going through the R exercise we did on Piazza. 
+
+For this week: 
+\begin{itemize}
+\item Groves, et al.\ pp.\ 95 \& 96: answer questions 2, 4, 5, 6
+\item Describe how Roberts, et al.\ (2004) created their sample and what they did to minimize representation errors
+\item Explain the disagreement between the Iraqi Body Count and the Roberts, et al.\ team \emph{based on sampling theory}
+\item Fill out the following descriptive table for DCAS2016 respondents and include the R script to show how you came to the numbers that you did
+\end{itemize}
+
+
+
+\end{document}
