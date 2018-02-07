@@ -1,0 +1,22 @@
+---
+title: "R Learning Guide"
+author: "Mike Bader"
+date: "February 2018"
+toc:
+  level: 2
+output:
+  pdf_document:
+    keep_tex: yes
+  md_document:
+    variant: markdown
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+setwd("~/work/Teaching/Courses/ResearchPracticum/RLearningGuide/")
+```
+
+```{r child="ch1_variables_and_data/RLearningGuide_variables_and_data.Rmd"}
+```
