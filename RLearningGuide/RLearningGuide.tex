@@ -205,9 +205,9 @@ learned?
 
 We're talking about a substantial amount of money!
 
-\section{Getting R}\label{getting-r}
+\subsection{Getting R}\label{getting-r}
 
-\subsection{Download R}\label{download-r}
+\subsubsection{Download R}\label{download-r}
 
 I hope that I have convinced you to at least try R at this point. That
 means you will need to get this amazing, powerful, and cost-effective
@@ -219,7 +219,7 @@ Find the United States and download one from that lists (I use the
 \href{https://mirrors.nics.utk.edu/cran/}{National Institute for
 Computational Sciences in Oak Ridge, TN}).
 
-\subsection{RStudio}\label{rstudio}
+\subsubsection{RStudio}\label{rstudio}
 
 If you open up R after downloading it, you will see that it gives you
 \emph{nothing} except a command line to type in commands to be run. This
@@ -260,7 +260,7 @@ more advanced applications).
 To get RStudio, you will go to \url{https://www.rstudio.com/} and then
 find the link for RStudio and download. This software is also free.
 
-\subsection{Getting Help}\label{getting-help}
+\subsubsection{Getting Help}\label{getting-help}
 
 As you go on this adventure, you will likely need help along the way.
 There are a couple of great resources on the web to help you learn just
@@ -279,7 +279,7 @@ is a blog with posts that cover tutorials and code for basic to advanced
 material
 \end{description}
 
-\section{First Steps with R}\label{first-steps-with-r}
+\section{Variables and Data}\label{variables-and-data}
 
 \subsection{What is a Variable?}\label{what-is-a-variable}
 
@@ -487,18 +487,19 @@ it at any time. If a dataset will change, for example by getting new
 data appended as they become available, it's probably better to open the
 data from the internet.
 
-\hypertarget{data_local}{\subsubsection{\texorpdfstring{Loading data
-from a file on your computer (also known as loading from a `local
-file').}{Loading data from a file on your computer (also known as loading from a local file).}}\label{data_local}}
+\hypertarget{data_local}{\subsubsection{Loading data from a file on your
+computer}\label{data_local}}
 
-To be able to open the data, you will have to tell R where you have
-stored it on your computer. To do this, you will need to know a) the
-directory in which you stored it and b) the file name. Every operating
-system stores files into different directories. You probably know these
-as folders when you go to ``My Computer'' on a PC or ``Macintosh HD'' on
-a Mac (if you use Linux, I will assume that you know all of this and you
-can probably tell me how I've gotten this wrong). The folders just
-provide a visual representation of directories.
+You will open data that you have saved on your own machine (also known
+as loading from a `local file'). To be able to open the data, you will
+have to tell R where you have stored it on your computer. To do this,
+you will need to know a) the directory in which you stored it and b) the
+file name. Every operating system stores files into different
+directories. You probably know these as folders when you go to ``My
+Computer'' on a PC or ``Macintosh HD'' on a Mac (if you use Linux, I
+will assume that you know all of this and you can probably tell me how
+I've gotten this wrong). The folders just provide a visual
+representation of directories.
 
 To open the data, you will use the function \texttt{read.csv()}. The
 function takes one required \emph{argument}, the file name to be read. R
@@ -648,7 +649,7 @@ Now it would be wise to inspect the data, either by using
   want to remove that row before any analysis. We will discuss how to do
   that later in this Guide.}
 
-\section{Review}\label{review}
+\subsection{Review: Variables and Data}\label{review-variables-and-data}
 
 \begin{itemize}
 \tightlist
@@ -666,6 +667,418 @@ Now it would be wise to inspect the data, either by using
   data and loading it \protect\hyperlink{data_local}{from your local
   machine} or from the \protect\hyperlink{data_internet}{internet}.
 \end{itemize}
+
+\section{Descriptive Statistics in R}\label{descriptive-statistics-in-r}
+
+\subsection{What are Descriptive
+Statistics?}\label{what-are-descriptive-statistics}
+
+They are \emph{univariate} statistics that describe the characteristics
+of respondents in the study. Now remember, descriptive statistics are a
+\emph{model}: they abstract all of our data into a single number.
+
+We are going to find the mean and the standard deviation of data from
+the DCAS2016
+
+\subsection{Calculating Descriptive Statistics in
+R}\label{calculating-descriptive-statistics-in-r}
+
+You should have, from last time, the DCAS2016 data already loaded. I am
+going to assume that you have that loaded into a variable called
+\texttt{dcas}.
+
+Now, remember that the variable \texttt{dcas} contains a spreadsheet, or
+a matrix. R will be looking for you to define the elements of the
+spreadsheet based on \emph{rows} and \emph{columns}.
+
+\emph{Columns} In a dataframe, we can refer to a column of data by using
+the \texttt{\$} operator. If we write
+
+\begin{verbatim}
+dcas$q4
+\end{verbatim}
+
+that means, give me all of the rows of the spreadsheet {\texttt{dcas}},
+but only the values in column {\texttt{q4}}. What you will get will be a
+\emph{vector}. A vector is a series of values (think of a list, but
+lists actually have a different meaning in R.)
+
+Now, it turns out that \texttt{q4} corresponds to Question 4 from the
+DCAS2016 (logical, right?), which reads:
+
+\begin{quote}
+\textbf{4. How many years have you lived in your current neighborhood?}
+\emph{Answer 0 if less than 1 year.}\\
+\_\_\_\_\_\_\_\_\_\_ \emph{years (write in number of years)}
+\end{quote}
+
+If we have done everything right, and we type the following into our
+console in RStudio, we should get a list of integers corresponding to
+the number of years respondents have lived in their current
+neighborhood:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dcas$q4}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    [1] 13 16 16  8 12 12 24 35 12 12 11 19  5  8 11  3 10  1 50  2 22  7 35
+##   [24] 38 16 31 29 26 33  3 52 26  1  2 60 50 22 14 20 11 13 10 13 25  3  4
+##   [47] 32 20 17  3 20  1 37 27 34 17  2 15 15  7 26  3 22 40  2 10  4 26 17
+##   [70] 11 14 41 53 97  5 26 19  3  5 97 60 32  3  3 14 27 37 49  2 30 31 29
+##   [93] 18  2 11  3  3 38  4 15  7 20  4 20 56 10 20 10  0 36  1 33  1 10  7
+##  [116] 13 15  2 24  9 12 28 11 14  8  2 30  2 11  4  4  0 45 17 40 14 43 13
+##  [139]  0  3  5 32 35  7 41 12 20  3 27  8 45 23  3  6  0 26 25 29 25  2 18
+##  [162] 18 12 18 32  1 22  7 34 16 50 12 17  2 13 25 14 36 26  5 12  2  3  3
+##  [185]  0  3  6  2 17 49 22 20  4  3 23 10  8 10  7 20 50  8 26 20 15  0  8
+##  [208] 50 20 12 40  4 35 10 13 22 32  4  0  0  7  2  2  4 18  0 24  8 17 28
+##  [231]  8  3 20 15  4  3 14 15  2 28  3 22 50  1 14  2  2  2 40 14 18 97  2
+##  [254] 15 30  3 15  9  3 18 26 23 20 14  2  0 30  1 18  6  6 11 25 20  9 10
+##  [277] 27 11 40 97 13  0 20  2  5 66 27 12 25  6  3  3 12 24  6 20  2 18 28
+##  [300]  0 45 20  3 27  1  0 52 31 30 42  8 35  2 35  2 12 12 15 11  1 32 46
+##  [323]  3  6 10  2 32 31  1 17  6  3 15  3  8 19 20 11 15 13  9 14  4 25 51
+##  [346] 10 26 35 14  8  2 22 18 28  5 15 22  2 19 15  0  2 25 32  0 13 15 28
+##  [369] 30 15  4  6 16 47  7  0 15 12 23  8  5 13 11 10 25  0 27  8  5 15 41
+##  [392]  3 18 20  4  8 64 10 12 49 12  0  7 30 21 16 17 10  7 34  1 18  3  3
+##  [415]  5 23 22 23 16 18 32 25 33  3 50 20  2  3  3 29 20  0  2 20  4  0  5
+##  [438] 11  3  6  8  1 20 10  0  4 20 31 23  6 25 15 15 13 27  4  6  0 25  4
+##  [461] 53 28  3 19 16 18  7  8  9 35 35 30  8  2  1  2  1 32 41  5 37  7  6
+##  [484] 28  7 30 30 25 40 97 10  1  8 25  5 12  2  2 22 22 36  5  2 31 13 16
+##  [507] 35 31  5  8 11  0  5 29 25 25 12 58 25 24  4 10 15  3 15  5  2  8 24
+##  [530] 19  4 16  5 12  1  8 50 13 17  2 26 20  1  0 21 19  5 32  3 41 19 16
+##  [553]  2 21  0  5 10 12 97 20  3 23 24  7  4  2  5  0  7  5 16  5 13  0  7
+##  [576]  4 26 13  6 33 22  1  3 16 25 15 15  2  7 34 31  6  7  2 20 10 13 10
+##  [599]  3 20 24 23  6  4  6 28  8  2 12 16 23 34 15 11  2 17 58  7 17  6  5
+##  [622]  3 10 22 20 21 16 34  8 11  3 26  1  6 20 19 26 30 24 15 33  5  5 15
+##  [645] 15 31  2 30 38 38  5 10  7  3 11 17 15 13 10  2 36 16  7  3 11 15 97
+##  [668] 43  5 31 45  7  2 30 25  0 12 14 20  7 24 30 33  1 30 13 10 17 33 31
+##  [691]  1  2  8  7 18  1  4 40  9 31 24 10 20  6 59 11  6  5 97  8  0  5  6
+##  [714]  2 10 34  9 13  2 17  3  4  0  2  2 16 29  8 29  7 10  5 31  2 10  2
+##  [737] 27 97 16  0  5 15  6  0 97 10 22  8 20 44 28 32 15 27  5  4  2 11  5
+##  [760]  8  6 10 15  5  8  9 12  3 10 30  6  6  0  3 18 10 30 97  0  5 10 10
+##  [783] 30  8  0 12  1  0  0 18  3  3 16 20  7 18 32 25  5  9  5  8  8 17  3
+##  [806] 14 22 20 19 19  4  2 16 10  3  3 26  2  4  0  7  1 25 17  1  4 31  2
+##  [829] 30 25  1  2 22 52 15  2 50 29  1 97  1 14  4 16  1 20  9 14 32 33 14
+##  [852] 30  5 15 15  6  0 25 60 12  5 14 97 10 20 12  9  5  2 20 20  4 14  3
+##  [875] 42  5  5  0 27 10 33 23 15  1 20  4  2  3 36  2  8 11  2 30 15  2  3
+##  [898] 15  3 15 20  1  2 12  3  5  5  2  6 20 13  6  0  5 10 10 10 17 15 38
+##  [921] 17 12 44 11 17 12  0 10  3 23 13 33 13 22  2 20  7  7  3  5 12  8 15
+##  [944] 97  3 97  0 16 22 15 45 15 30 37 43  2  2 14  3  6 21 15 30 12  9 10
+##  [967] 30  9 17  7 17  7 21  4  7  2 13 97 16 17  9  1 30 26 18  4 38 11 14
+##  [990] 12 20  3  6 15 18 38 10  3 75  1
+##  [ reached getOption("max.print") -- omitted 222 entries ]
+\end{verbatim}
+
+A couple of notes:
+
+\begin{itemize}
+\item
+  What was in the .R file that I ran is contained in the gray box.
+\item
+  The numbers without brackets are the elements, the actual responses,
+  for each of the 1,222 respondents; the first respondent has lived in
+  their neighborhood for 13 years, the second for 16, the third also for
+  16, and so on.
+\item
+  The numbers in brackets (e.g., {\texttt{{[}1{]}\ {[}15{]}\ {[}29{]}}})
+  represent which element number the line of output starts with; so the
+  first element in line 1 is\(\ldots\)well\(\ldots\)one. The first
+  element of the second line of output starts with element number 15
+  (and if you look at the number of elements in the first row, you will
+  see that there are 14 elements).
+\end{itemize}
+
+Now that does not seem like a way to report anything -- even R is like,
+um\(\ldots\) this is too long for me. A better number would be the
+\emph{mean}. We want to know the average number of years residents have
+lived in their neighborhood.
+
+To get that, we would put the following in our code:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(dcas$q4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 15.95499
+\end{verbatim}
+
+\begin{itemize}
+\item
+  {\texttt{mean()}} is a function that says give me the mean of all of
+  the numbers inside my parentheses, in this case the vector
+  {\texttt{dcas\$q4}}.
+\item
+  The response starts with {\texttt{{[}1{]}}}, which tells us that the
+  first element of the responses on that line starts with the first
+  element. It's not particularly helpful in this case because there is
+  only one element, which is\(\ldots\)
+\item
+  {\texttt{15.95499}}, the average number of years that respondents
+  lived in their neighborhoods
+\end{itemize}
+
+Now, unlike Stata or SPSS, R makes it very easy to save that value into
+another value that we can then use. We just need to assign it to a
+variable name, like so:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mean_years <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(dcas$q4)}
+\end{Highlighting}
+\end{Shaded}
+
+Uh oh! We didn't get any output!!!
+
+That's okay, we actually shouldn't get any output. Rather than telling
+\emph{us} what the value is, R gives that value to the variable
+\texttt{mean\_years}. But, if we type \texttt{mean\_years} into our
+file, then we get:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mean_years}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 15.95499
+\end{verbatim}
+
+Okay, so we have the average number of years respondents have lived in
+their neighborhood stored in the variable \texttt{mean\_years}. But, we
+probably don't want to report the value to five decimal places; after
+all, we were only precise to the number of years. It probably makes
+sense to round the value to one decimal place. To do that, we would use
+the function \texttt{round()}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{round}\NormalTok{(mean_years,}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 16
+\end{verbatim}
+
+When we do, it turns out that it equals 16 which is actually 16.0, but
+if the last digit equals zero, R does not report it.
+
+We could do this all in one step if we wanted. Remember that
+\texttt{mean\_years} equals the value of \texttt{mean(dcas\$q4)}, so
+figuring out the rounded value would be: \texttt{round(mean(dcas\$q4))}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{round}\NormalTok{(}\KeywordTok{mean}\NormalTok{(dcas$q4),}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 16
+\end{verbatim}
+
+And we could save that final value into the variable
+\texttt{mean\_years}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mean_years <-}\StringTok{ }\KeywordTok{round}\NormalTok{(}\KeywordTok{mean}\NormalTok{(dcas$q4),}\DecValTok{1}\NormalTok{)}
+\NormalTok{mean_years}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 16
+\end{verbatim}
+
+Now let's find the standard deviation. The function for standard
+deviation in R is \texttt{sd()}. To get the value to one decimal place
+we would write:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sd_years <-}\StringTok{ }\KeywordTok{round}\NormalTok{(}\KeywordTok{sd}\NormalTok{(dcas$q4),}\DecValTok{1}\NormalTok{)}
+\NormalTok{sd_years}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 16.1
+\end{verbatim}
+
+We have a mean of 16 and a standard deviation of 16. Seems to me that
+the variable can't be normally distributed. Let's look at a histogram to
+see:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{hist}\NormalTok{(dcas$q4)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{RLearningGuide_files/figure-latex/hist-1.pdf}
+
+Sure enough, it's not. But we'll worry about that later.
+
+\subsection{Calculating Descriptive Statistics of Categorical
+Variables}\label{calculating-descriptive-statistics-of-categorical-variables}
+
+This process works well for continuous variables, but for categorical
+variables we want to report the percentage or proportion of the
+respondents who fall in each category. To do that, we will use the
+\texttt{table()} command (which is like \texttt{tab} in Stata).
+
+Let's look at Question 1 from the DCAS2016:
+
+\begin{quote}
+\textbf{1. Do you rent your home, own it, or do you have some other
+arrangement?}
+
+\_\_\_\_ Rent
+
+\_\_\_\_ Own
+
+\_\_\_\_ Some other arrangement
+\end{quote}
+
+If we tried to calculate the mean of Question 1, let's see what we would
+get:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(dcas$q1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in mean.default(dcas$q1): argument is not numeric or logical:
+## returning NA
+\end{verbatim}
+
+\begin{verbatim}
+## [1] NA
+\end{verbatim}
+
+As Scooby Doo would say, Ruh Roh!!! Let's parse what R returned here. On
+the first line, R complained:
+
+\begin{verbatim}
+Warning in mean.default(dcas$q1): argument is not numeric or logical:
+\end{verbatim}
+
+In the first part of the statement (before the colon) R is telling us
+that it is giving us a warning, which means that the program will not
+stop running but something might be wrong. In the second part of the
+statement, it is telling us that the data we passed, \texttt{dcas\$q1}
+does not contain either numeric data or logical (True/False) data. That
+makes sense, this is a categorical variable. We have three response
+options: Rent, Own, Some other arrangement. It doesn't make sense to
+take the mean of that categorical value.
+
+In the second line, R tells us:
+
+\begin{verbatim}
+returning NA
+\end{verbatim}
+
+Okay, this is easier. In R, the value \texttt{NA} means that the value
+does not exist. Together, in these two lines R is telling us:
+
+\begin{quote}
+I'm warning you that you gave me a value that doesn't make sense with
+this function (you should have given me either numbers or a list of
+Trues and Falses), so I'm going to give you back a placeholder that
+represents nothing.
+\end{quote}
+
+What we want to do instead is to list the possible options using the
+\texttt{table()} function, as I mentioned earlier. Let's see what we get
+when we do that:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(dcas$q1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##              No Answer                    Own                   Rent 
+##                      9                    859                    318 
+## Some other arrangement 
+##                     36
+\end{verbatim}
+
+This looks better. We find out that 859 respondents own their homes, 318
+rent, 36 have some other arrangement, and 9 gave no answer.\footnote{Technically
+  these should be represented by \texttt{NA} since they don't have an
+  answer, but we will save that for a later date.}
+
+Okay, that's helpful, but not exactly what we want. We want to know the
+\emph{proportion} of respondents who gave each value. We calcluate the
+proportion giving response \emph{r} as:
+
+\[P(r) = \frac{N_r}{N}\]
+
+The proportion (or probability) that respondent answered Question 1 with
+response category \(r\) equals the number of respondents who answered
+the question with category \(r\) divided by the number of respondents,
+\emph{N}. To make this more concrete:
+\[P(own)=\frac{N_{own}}{N}=\frac{859}{(859+318+36+9)}\approx0.70\].
+
+We could go through and do all of those calculations, or we can have R
+do it for us. I would prefer to let R do it for me. To do that, we will
+need to figure out how many respondents there are. The function
+\texttt{nrow()} tells us how many rows there are in a dataframe.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{N <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(dcas)}
+\NormalTok{prop_own <-}\StringTok{ }\KeywordTok{table}\NormalTok{(dcas$q1)/N}
+\NormalTok{prop_own}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##              No Answer                    Own                   Rent 
+##            0.007364975            0.702945990            0.260229133 
+## Some other arrangement 
+##            0.029459902
+\end{verbatim}
+
+What we just did was to tell R to divide each cell in the table created
+by \texttt{table(dcas\$q1)} by the number of respondents, \texttt{N}
+(which equals 1222). The table we got was better, but still not great
+given the long decimals. Let's round them off and replace what's stored
+in \texttt{prop\_own} with the rounded values. Since we have
+proportions, it would make sense to round to two or three decimal
+places:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prop_own <-}\StringTok{ }\KeywordTok{round}\NormalTok{(prop_own,}\DecValTok{2}\NormalTok{)}
+\NormalTok{prop_own}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##              No Answer                    Own                   Rent 
+##                   0.01                   0.70                   0.26 
+## Some other arrangement 
+##                   0.03
+\end{verbatim}
+
+Now you could report the descriptive statistics for the categorical
+variables as the proportion of respondents who reported being in each
+category.
 
 
 \end{document}

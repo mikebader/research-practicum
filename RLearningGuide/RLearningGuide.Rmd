@@ -2,11 +2,11 @@
 title: "R Learning Guide"
 author: "Mike Bader"
 date: "February 2018"
-toc:
-  level: 2
 output:
   pdf_document:
     keep_tex: yes
+    toc: true
+    toc_depth: 3
   md_document:
     variant: markdown
   html_document: default
@@ -15,8 +15,160 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 rm(list=ls())
+
+dataDIR <- "/Users/bader/work/data/dcas/dcas2016/Dataset/"
+dcas_fname <- paste0(dataDIR,"DCAS_2016_weighted.csv")
+dcas <- read.csv(dcas_fname)
+
 setwd("~/work/Teaching/Courses/ResearchPracticum/RLearningGuide/")
 ```
 
+Welcome to R!
+=============
+
+You are embarking on an exciting adventure to learn extremely powerful software that you can download **for free**. 
+
+## What is R? ##
+
+Let's start by describing this powerful tool to start. R is both:
+
+-   A statistical computing software
+
+-   A full-fledged programming language
+
+If you have learned other statistical software, you might wonder why you would want to learn another. Especially because many find that R has a steeper learning curve than these software programs. 
+
+## Difference from Other Statistical Software ##
+
+Other statistical software like Stata, SPSS, and SAS do one thing: they
+take a table (spreadsheet) of data and statistical commands to analyze
+that data.
+
+R can do this, too. But R can do many more things because R is an entire
+programming language. It has many different types of data that you can
+use. You can put in a table (called a “data frame” in R-speak), but you
+have lots of other types of data that you can use. It offers much more
+flexibility than other statistical software.
+
+BUT, that flexibility comes at the cost of simplicity.
+
+## Why R? ##
+
+So why make you learn something that’s harder than what you have already
+learned?
+
+-   R is open source (free as in speech), which means that many different people can help
+    extend the language to do common tasks or specialized analysis
+
+-   R is the future of statistical software; employers will be
+    increasingly moving to R
+
+-   Lest we forget, let us remember that R is **free** (as in beer); 
+    you can use it on any computer and with
+    any employer. Many of you will be working for employers that might
+    not have large budgets; learning free software means that you will
+    always be able to use it.
+
+      ----------- --------------- ----------------------------
+      SAS[^1]          \$9,720.00 + Windows only
+      SPSS[^2]      \$99.00/month + \$237.00/month add-ons
+      Stata[^3]        \$1,695.00 + \$300 for large datasets
+      R                    \$0.00 
+      ----------- --------------- ----------------------------
+
+[^1]: For SAS Analytics Pro
+    <https://www.sas.com/en_us/software/analytics-pro.html>; January 20,
+    2018
+
+[^2]: <https://www.ibm.com/products/spss-statistics/pricing>; January
+    20, 2018
+
+[^3]: Stata 15 government & nonprofit pricing
+    <https://www.stata.com/order/new/gov/single-user-licenses/dl/>;
+    January 20, 2018
+    
+We’re talking about a substantial amount of money!
+
+## Getting R ##
+
+### Download R ###
+
+I hope that I have convinced you to at least try R at this point. 
+That means you will need to get this amazing, powerful, and 
+cost-effective software. You will need to download R. To do so
+Go to <https://www.r-project.org/> and look
+for the link that says “Download.” After you do that, you will be sent
+to a list of mirrors (servers that distribute R so that no single server
+gets overloaded). Find the United States and download one from that
+lists (I use the [National Institute for Computational Sciences in Oak
+Ridge, TN](https://mirrors.nics.utk.edu/cran/)).
+
+### RStudio ###
+
+If you open up R after downloading it, you will see that it gives you
+*nothing* except a command line to type in commands to be run. This is
+not ideal and would make R *really* difficult if that was the only way
+with which you could interact with R.
+
+That is where RStudio comes in. RStudio is an *Integrated Development
+Environment (IDE)* for R. That means that RStudio gives you a window
+into R–basically it acts as a gopher between you and R.
+
+In acting as a gopher, it provides a nice *graphical user interface
+(GUI)* that makes R a lot easier to use.
+
+There are four different windows in RStudio that you will use:
+
+Source (ctrl-1)
+
+:   This is where you keep your scripts where you do your analysis.
+    These are the same as <span>`.do`</span> files in Stata.
+
+Console (ctrl-2)
+
+:   This is where you can type commands directly to tell R what to do.
+    You should use this sparingly because only entering commands in the
+    console makes it difficult to reproduce what you have done. My
+    advice: work in the source window, then copy/paste into the console
+    (or source the command directly by pressing ‘ctrl-Enter’—we’ll get
+    to that)
+
+Environment
+
+:   This window shows you all of the objects that are currently
+    available in R. Remember how I told you that R can hold different
+    types of data? This is where you will find all of them. A second tab
+    in that window contains your history, which contains the list of
+    commands that you have entered into the console.
+
+Viewer
+
+:   This window is where you will view help files and plots that you
+    make (you can view a whole bunch of other stuff down there, but
+    those are for more advanced applications).
+
+To get RStudio, you will go to <https://www.rstudio.com/> and then find
+the link for RStudio and download. This software is also free.
+
+### Getting Help ###
+
+As you go on this adventure, you will likely need help along the way. There are a couple of great resources on the web to help you learn just about everything that you would like to do. 
+
+[Stack Overflow](https://stackoverflow.com/questions/tagged/r) 
+
+:   provides user-generated answers to questions posed in forums. Good answers tend to filter to the top of the list based on an ingenuous ranking system of votes and points. 
+
+[Rseek](https://rseek.org/) 
+
+:   gives Google-like search functionality to find R-related material. 
+
+[R-bloggers](https://www.r-bloggers.com/) 
+
+:   is a blog with posts that cover tutorials and code for basic to advanced material
+
+
 ```{r child="ch1_variables_and_data/RLearningGuide_variables_and_data.Rmd"}
+```
+
+```{r child="ch2_descriptive_statistics/ch2_descriptive_statistics.Rmd"}
 ```

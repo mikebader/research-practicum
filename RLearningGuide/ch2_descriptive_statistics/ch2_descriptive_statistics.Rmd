@@ -1,0 +1,221 @@
+---
+title: "Descriptive Statistics"
+author: "Mike Bader"
+date: "February 2018"
+---
+
+Descriptive Statistics in R
+===========================
+
+What are Descriptive Statistics?
+--------------------------------
+
+They are *univariate* statistics that describe the characteristics of
+respondents in the study. Now remember, descriptive statistics are a *model*: they abstract all of
+our data into a single number.
+
+
+We are going to find the mean and the standard deviation of data from the DCAS2016
+
+Calculating Descriptive Statistics in R
+---------------------------------------
+
+You should have, from last time, the DCAS2016 data already loaded. I am
+going to assume that you have that loaded into a variable called
+`dcas`.
+
+Now, remember that the variable `dcas` contains a
+spreadsheet, or a matrix. R will be looking for you to define the
+elements of the spreadsheet based on *rows* and *columns*.
+
+*Columns* In a dataframe, we can refer to a column of data by using the
+`$` operator. If we write
+
+    dcas$q4
+
+that means, give me all of the rows of the spreadsheet
+<span>`dcas`</span>, but only the values in column <span>`q4`</span>.
+What you will get will be a *vector*. A vector is a series of values (think of a list, but lists actually have a different meaning in R.)
+
+Now, it turns out that `q4` corresponds to Question 4 from
+the DCAS2016 (logical, right?), which reads:
+
+> **4. How many years have you lived in your current neighborhood?**
+> *Answer 0 if less than 1 year.*\
+>
+> __________  *years (write in number of years)*
+
+If we have done everything right, and we type the following into our console in 
+RStudio, we should get a list of integers corresponding to the number
+of years respondents have lived in their current neighborhood:
+
+```{r exampleCol}
+dcas$q4
+```
+
+A couple of notes:
+
+-   What was in the .R file that I ran is contained in the gray box. 
+
+-   The numbers without brackets are the elements, the actual responses,
+    for each of the 1,222 respondents; the first respondent has lived in
+    their neighborhood for 13 years, the second for 16, the third also
+    for 16, and so on.
+
+-   The numbers in brackets (e.g., <span>`[1] [15] [29]`</span>)
+    represent which element number the line of output starts with; so
+    the first element in line 1 is$\ldots$well$\ldots$one. The first
+    element of the second line of output starts with element number 15
+    (and if you look at the number of elements in the first row, you
+    will see that there are 14 elements).
+
+Now that does not seem like a way to report anything – even R is like,
+um$\ldots$ this is too long for me. A better number would be the *mean*.
+We want to know the average number of years residents have lived in
+their neighborhood.
+
+To get that, we would put the following in our code:
+
+```{r mean} 
+mean(dcas$q4)
+```
+
+-   <span>`mean()`</span> is a function that says give me the mean of
+    all of the numbers inside my parentheses, in this case the vector
+    <span>`dcas$q4`</span>.
+
+-   The response starts with <span>`[1]`</span>, which tells us that the
+    first element of the responses on that line starts with the
+    first element. It’s not particularly helpful in this case because
+    there is only one element, which is$\ldots$
+
+-   <span>`15.95499`</span>, the average number of years that
+    respondents lived in their neighborhoods
+
+Now, unlike Stata or SPSS, R makes it very easy to save that value into
+another value that we can then use. We just need to assign it to a
+variable name, like so:
+
+```{r assignMean}
+mean_years <- mean(dcas$q4)
+```
+
+Uh oh! We didn't get any output!!! 
+
+That's okay, we actually shouldn't get any output. Rather than telling *us* what the value is, R gives that value to the variable `mean_years`. But, if we type `mean_years` into our file, then we get: 
+
+```{r}
+mean_years
+```
+
+Okay, so we have the average number of years respondents have lived in their neighborhood stored in the variable `mean_years`. But, we probably don't want to report the value to five decimal places; after all, we were only precise to the number of years. It probably makes sense to round the value to one decimal place. To do that, we would use the function `round()`: 
+
+```{r round}
+round(mean_years,1)
+```
+
+When we do, it turns out that it equals `r round(mean_years,1)` which is actually `r sprintf('%2.1f',round(mean_years))`, but if the last digit equals zero, R does not report it.
+
+We could do this all in one step if we wanted. Remember that `mean_years` equals the value of `mean(dcas$q4)`, so figuring out the rounded value would be: `round(mean(dcas$q4))`: 
+
+```{r onestep}
+round(mean(dcas$q4),1)
+```
+
+And we could save that final value into the variable `mean_years`: 
+
+```{r onestep_variable}
+mean_years <- round(mean(dcas$q4),1)
+mean_years
+```
+
+Now let's find the standard deviation. The function for standard deviation in R is `sd()`. To get the value to one decimal place we would write: 
+
+```{r sd}
+sd_years <- round(sd(dcas$q4),1)
+sd_years
+```
+
+We have a mean of `r mean_years` and a standard deviation of `r mean_years`. Seems to me that the variable can't be normally distributed. Let's look at a histogram to see: 
+
+```{r hist}
+hist(dcas$q4)
+```
+
+Sure enough, it's not. But we'll worry about that later. 
+
+Calculating Descriptive Statistics of Categorical Variables
+-----------------------------------------------------------
+
+This process works well for continuous variables, but for categorical variables we want to report the percentage or proportion of the respondents who fall in each category. To do that, we will use the `table()` command (which is like `tab` in Stata).
+
+Let's look at Question 1 from the DCAS2016: 
+
+>  **1. 	Do you rent your home, own it, or do you have some other arrangement?**
+>
+>  ____ Rent
+>
+>  ____ Own         
+>
+>  ____ Some other arrangement
+
+If we tried to calculate the mean of Question 1, let's see what we would get: 
+
+```{r mean_of_categorical_var}
+mean(dcas$q1)
+```
+
+As Scooby Doo would say, Ruh Roh!!! Let's parse what R returned here. On the first line, R complained: 
+
+    Warning in mean.default(dcas$q1): argument is not numeric or logical:
+
+In the first part of the statement (before the colon) R is telling us that it is giving us a warning, which means that the program will not stop running but something might be wrong. In the second part of the statement, it is telling us that the data we passed, `dcas$q1` does not contain either numeric data or logical (True/False) data. That makes sense, this is a categorical variable. We have three response options: Rent, Own, Some other arrangement. It doesn't make sense to take the mean of that categorical value. 
+
+In the second line, R tells us: 
+
+    returning NA
+
+Okay, this is easier. In R, the value `NA` means that the value does not exist. Together, in these two lines R is telling us: 
+
+> I'm warning you that you gave me a value that doesn't make sense with this 
+> function (you should have given me either numbers or a list of Trues and 
+> Falses), so I'm going to give you back a placeholder that represents nothing.
+
+What we want to do instead is to list the possible options using the `table()` function, as I mentioned earlier. Let's see what we get when we do that: 
+
+```{r table_exp}
+table(dcas$q1)
+```
+
+This looks better. We find out that 859 respondents own their homes, 318 rent, 36 have some other arrangement, and 9 gave no answer.[^noanswer]
+
+Okay, that's helpful, but not exactly what we want. We want to know the *proportion* of respondents who gave each value. We calcluate the proportion giving response *r* as: 
+
+$$P(r) = \frac{N_r}{N}$$
+
+The proportion (or probability) that respondent answered Question 1 with response category $r$ equals the number of respondents who answered the question with category $r$ divided by the number of respondents, *N*. To make this more concrete: $$P(own)=\frac{N_{own}}{N}=\frac{859}{(859+318+36+9)}\approx0.70$$.
+
+We could go through and do all of those calculations, or we can have R do it for us. I would prefer to let R do it for me. To do that, we will need to figure out how many respondents there are. The function `nrow()` tells us how many rows there are in a dataframe. 
+
+```{r table}
+N <- nrow(dcas)
+prop_own <- table(dcas$q1)/N
+prop_own
+```
+
+What we just did was to tell R to divide each cell in the table created by `table(dcas$q1)` by the number of respondents, `N` (which equals `r N`). The table we got was better, but still not great given the long decimals. Let's round them off and replace what's stored in `prop_own` with the rounded values. Since we have proportions, it would make sense to round to two or three decimal places: 
+
+```{r table_rounded}
+prop_own <- round(prop_own,2)
+prop_own
+```
+
+Now you could report the descriptive statistics for the categorical variables as the proportion of respondents who reported being in each category. 
+
+
+
+
+
+[^noanswer]: Technically these should be represented by `NA` since they don't have an answer, but we will save that for a later date. 
+
+
