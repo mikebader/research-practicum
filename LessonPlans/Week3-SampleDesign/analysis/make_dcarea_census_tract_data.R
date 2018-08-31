@@ -3,8 +3,9 @@ library(xtable)
 setwd("/Users/bader/work/Teaching/Courses/ResearchPracticum/LessonPlans/Week3-SampleDesign/analysis")
 
 
-data.dir <- "/Users/bader/work/Data/Census/DCMetro/DCAndBorderingCounties/"
-dcarea.file <- paste0(data.dir,"R10835953_SL140.txt")
+data.dir <- "/Users/bader/work/Data/"
+dc.data.dir <- paste0(data.dir,"Census/DCMetro/DCAndBorderingCounties/")
+dcarea.file <- paste0(dc.data.dir,"R10835953_SL140.txt")
 
 lines <- readLines(dcarea.file)
 dcarea.labels <- as.vector(strsplit(lines[1],'\t')[[1]])
@@ -26,3 +27,11 @@ print.xtable(xvars,
              file="dcareaCensusVariableNamesTable.tex"
              )
 write.csv(dcarea,file="dcarea_census_tract_data.csv")
+
+ltdb <- read.csv("/Users/bader/work/otherwriting/2016-2017/KCRWMaps/data/tabular/ltdb.csv")
+ltdb$Geo_FIPS <- sprintf("%011.0f",ltdb$fips10)
+ltdb.dc <- ltdb[ltdb$Geo_FIPS%in%dcarea$Geo_FIPS,]
+
+write.csv(ltdb.dc,"/Users/bader/work/Teaching/Courses/ResearchPracticum/LessonPlans/Week4-DCArea/analysis")
+
+

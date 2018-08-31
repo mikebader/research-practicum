@@ -1,0 +1,148 @@
+---
+title: "Homework 4 Solutions"
+author: "Michael Bader"
+date: "February 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load Data Frame
+I will load the data directly from the web into an object named `dcarea` using the URL in the homework assignment. 
+
+```{r load_data}
+dcarea <- read.csv("https://mdmb-mbweb.s3.amazonaws.com/media/courses/research-practicum/dcarea_census_tract_data.csv")
+```
+
+# Questions on Homework
+## Question 1: What is the size of the target population in the DC area? 
+The question asks for the target population of "residents 18 and older in these counties". Therefore, we need to look for the variables that contain counts of residents ages 18 and older. The variables `SE_T007_006` through `SE_T007_013` record the population, separated into 10-year intervals (except for those 85+). We need to sum the values of these variables within each tract and then sum across all tracts to get the size of the population. 
+
+```{r q1}
+dcarea$pop18.plus <- dcarea$SE_T007_006 + dcarea$SE_T007_007 + 
+                     dcarea$SE_T007_008 + dcarea$SE_T007_009 +
+                     dcarea$SE_T007_010 + dcarea$SE_T007_011 +
+                     dcarea$SE_T007_012 + dcarea$SE_T007_013
+sum(dcarea$pop18.plus)
+```
+
+If you want to do some expert-level R coding to avoid writing variable names over and over, you can combine the functions `paste0()`, which puts strings together with no spaces (hence the `0` in the name), and `sprintf()`, which formats numbers into particular formats of strings, to create a vector of all variables from `SE_T007_006` through `SE_T007_013`. In this case, we want a number formatted as a string with 3 characters and zeros "padding" the number in front of it (you can learn more about numbers in string formats [here][sprintf]) and pasted to the end of the string `SE_T007_`. We will create an object containing the formated numbers, called `nums.fmtd` and then we will assign this vector of variable names to the object `popvars`. 
+
+[sprintf]: https://www.rdocumentation.org/packages/base/versions/3.4.3/topics/sprintf
+
+We can then use the function `rowSums()` and then include the `dcarea` data frame with only the variables contained in the vector of variable names to, you guessed it, sum *across* rows for the specific variables. 
+
+```{r q1_adv}
+nums.fmtd <- sprintf("%03.0f",c(6:13)) ## Format numbers with zero padding
+popvars <- paste0("SE_T007_",nums.fmtd) ## Make vector of variable names
+popvars
+dcarea$pop18.plus <- rowSums(dcarea[,popvars])
+sum(dcarea$pop18.plus)
+```
+
+And we could also create pop18.plus in a single step: 
+
+```{r q1_adv_single}
+dcarea$pop18.plus <- rowSums(dcarea[,paste0("SE_T007_",sprintf("%03.0f",c(6:13)))])
+sum(dcarea$pop18.plus)
+```
+
+## Question 2
+This question asks us to find the average proportion of residents who identify as belonging to different racial groups *among census tracts*. In order to do this, we must calculate the proportion of each racial group in each census tract and then take the mean of those values. 
+
+```{r q2}
+## Non-Hispanic White Alone
+dcarea$pnhw <- dcarea$SE_T014_003/dcarea$SE_T014_001
+mean(dcarea$pnhw, na.rm=TRUE) 
+
+## Non-Hispanic Black Alone
+dcarea$pnhb <- dcarea$SE_T014_004/dcarea$SE_T014_001
+mean(dcarea$pnhb, na.rm=TRUE)
+
+## Hispanics (of any race)
+dcarea$hisp <- dcarea$SE_T014_010/dcarea$SE_T014_001
+mean(dcarea$hisp,na.rm=TRUE)
+
+## Asian or Pacific Islander
+## (we need to add Hispanic and non-Hispanic Asians and 
+## Hispanic and non-Hispanic Pacific Islanders)
+dcarea$api <- (dcarea$SE_T014_006+dcarea$SE_T014_007+dcarea$SE_T014_015+dcarea$SE_T014_016)/dcarea$SE_T014_001
+mean(dcarea$api,na.rm=TRUE)
+```
+
+If you did not wish to create intermediate variables, you could find the same numbers taking the mean of the calculated varlues: 
+
+```{r q2_adv}
+mean(dcarea$SE_T014_003/dcarea$SE_T014_001,na.rm=TRUE)
+mean(dcarea$SE_T014_004/dcarea$SE_T014_001,na.rm=TRUE)
+mean(dcarea$SE_T014_010/dcarea$SE_T014_001,na.rm=TRUE)
+mean((dcarea$SE_T014_006+dcarea$SE_T014_007+dcarea$SE_T014_015+dcarea$SE_T014_016)/dcarea$SE_T014_001,na.rm=TRUE)
+```
+
+Note that this is *not* the same as taking the average of the number of a racial group and dividing by the average number of people in census tracts. Doing so assumes that all tracts have the same population, which is not the case. 
+
+## Question 3
+Question 3 asks "What is the average percent poverty in tracts in the DC area?  What is the standard
+deviation of percent poverty?" The best way to approach this problem is to create intermediary variables to caluclate the poverty rate and then take the mean and standard deviation of the final constructed variable. 
+
+We will first create the denominator and assign it to the variable `povratd` (the `d` is for "denominator"), which is the sum of people "for whom poverty status is determined" that are under 18 (`SE_T114_001`), 18-64 (`SE_T115_001`), and 65 plus (`SE_T0016_001`). Then we will create the numerator and assign it to the variable `povratn` (can you guess what the `n` is for?) by summing the number of people in poverty under 18 (`SE_T114_002`), 18-64 (`SE_T115_002`), and 65 plus (`SE_T0016_002`). Then, we will create the poverty rate by dividing the numerator by the denominator. We can calculate the mean and the standard deviation. 
+
+```{r q3}
+dcarea$povratd <- (dcarea$SE_T114_001+dcarea$SE_T115_001+dcarea$SE_T116_001)
+dcarea$povratn <- (dcarea$SE_T114_002+dcarea$SE_T115_002+dcarea$SE_T116_002)
+dcarea$povrat <- dcarea$povratn / dcarea$povratd
+mean(dcarea$povrat,na.rm=TRUE)
+sd(dcarea$povrat,na.rm=TRUE)
+```
+
+## Question 4
+I have showed how to calculate the values for several variables to give you a sense of how to describe the variables that you care about. 
+
+### Educational Attainment
+For educational attainment, you can create a variable that divides the number of residents ages 25 and older with a particular type of degree by the number of residents ages 25 and older. 
+
+```{r q4_educ}
+## <HS education
+dcarea$pctlths <- dcarea$SE_T025_002 / dcarea$SE_T025_001
+mean(dcarea$pctlths,na.rm=TRUE)
+
+## HS
+dcarea$pcths <- dcarea$SE_T025_003 / dcarea$SE_T025_001
+mean(dcarea$pcths,na.rm=TRUE)
+
+## Doctoral education
+dcarea$pctphd <- dcarea$SE_T025_008 / dcarea$SE_T025_001
+mean(dcarea$pctphd,na.rm=TRUE)
+```
+
+If you wanted to do the expert-level R, you can use the `sapply()` function that *applies* a function to every element in a list. This substantially reduces the amount of code you need to calucalate the mean percentages of residents with different degrees across tracts. 
+
+```{r q4_educ_adv}
+divide_by_25plus <- function(x) {x/dcarea$SE_T025_001} ## Function divides
+                                                       ## argument by number 
+                                                       ## of residents 25+
+## Create variables for each level of educational attainment
+dcarea[,paste0("pctedlv",1:7)] <- sapply(dcarea[,paste0("SE_T025_00",2:8)],FUN=divide_by_25plus)
+## Take mean for each level of educational attainment
+sapply(dcarea[,paste0("pctedlv",1:7)],mean,na.rm=TRUE)
+```
+
+### Income
+This one is very straightforward. 
+
+```{r q4_inc}
+mean(dcarea$SE_T057_001,na.rm=TRUE)
+sd(dcarea$SE_T057_001,na.rm=TRUE)
+```
+
+### Health Insurance
+We can figure out the average percentage of residents who have health insurance. If we want to know how many *do no* have insurance, we subtract the proportion who do have insurance from 1. 
+
+```{r q4_hins}
+dcarea$pcthins <- dcarea$SE_T145_003/dcarea$SE_T145_001 ## Pct insured
+mean(dcarea$pcthins,na.rm=TRUE)
+dcarea$pctnohins <- 1 - dcarea$pcthins ## Pct uninsured
+mean(dcarea$pctnohins,na.rm=TRUE)
+```
