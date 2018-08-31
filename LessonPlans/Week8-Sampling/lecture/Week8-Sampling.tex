@@ -1,0 +1,359 @@
+\documentclass[11pt]{lecturenotes}
+
+%\let\theenumiorg\theenumi
+%
+%\newcommand{\code}[1]{\texttt{#1}}
+\topsep 0pt
+\itemsep 0pt
+
+\usepackage{enumitem}
+
+\input{../../courseObjectives.tex}
+
+\title{Sampling}
+\author{Michael Bader}
+\week{8}
+\lesson{1}
+\coursenumber{SOCY 625}
+\coursetitle{Practicum in Sociological Research}
+
+
+\begin{document}
+\maketitle
+
+\begin{objectives}{
+\item 
+}{
+\item 
+}
+\end{objectives}
+
+\section{Overview}
+Let's go back to the image that we have been using over and over again: 
+
+\begin{center}
+\includegraphics[scale=.5]{../../Week2-InferenceAndError/images/GrovesCh2Fig2.pdf}
+\end{center}
+
+We are now going to work on the right-hand side of the picture. Before we do, let's recall some important terms that we have used: 
+
+\begin{description}
+\item[models] are abstract representations of social processes (in this class, they can be defined as mathematical representations)
+\item[target population] is the group of elements (people) that we want to represent
+\item[sampling frame] is the list of units contained in the target population
+\item[samples] are one particular \emph{combination} of elements taken from the target population
+\end{description}
+
+Now, from that we can see that a \emph{sample} is a \emph{subset} of the sampling frame (and thus the target population). It is \textbf{one possible subset among many.}
+
+What we get to analyze from our \emph{realized} sample is one possible subset of all of the possible combinations that we can draw from a population. 
+
+\concept{realized sample}{some specific subset of a sampling frame that are actually drawn for a given sample}
+
+The main conceptual idea that we will be playing with today is this: 
+
+We will be talking about a dataset that represents \emph{all possible samples} that could be drawn out of a population. Our data are not the \emph{actual} data that we have when we draw a sample. Instead, we can think about each row in our spreadsheet being a possible sample from our population. 
+
+\begin{table}[h!]
+\footnotesize
+\begin{tabular}{lrrr}
+\multicolumn{4}{l}{\itshape Example dataset $\ldots$ } \\
+\textbf{Sample} & & & \\\toprule
+Sample 1 & & & \\ \midrule
+Sample 2 & & & \\  \midrule
+Sample 3 & & & \\ \midrule
+Sample 4 & & & \\ \midrule
+$\vdots$ & & & \\ \midrule
+Sample N & & & \\ \bottomrule
+\end{tabular}
+\end{table}
+
+What we will be doing is analyzing the \emph{possible samples} that we could, in theory, take.
+
+Now, we will be drawing those samples from a population. There will be a \emph{true, underlying mean value} for every variable in that population and \emph{true, underlying variation} around that mean in the population. 
+
+\slide
+\textbf{Population distribution}
+\begin{description}
+\item[population mean ($\mu_y$)] the true mean of variable $y$ in the target population
+\item[population variance ($\sigma^2_y$)] the true variance of $y$ in the target population
+\end{description}
+
+Remember here that the mean still represents a model: it distills all of the variation of the variable $y$ into a single number that represents the entire population. A model, therefore, exists independent of the sample that we draw to test the sample. The variance represents how ``wrong'' that model is, on average, across the entire population (hence the name ``error'' in statistics, though we are calling that variance or deviation to avoid confusing it with measurement error). 
+
+Now, every sample that we took from our dataset will have a mean and variance \emph{among the sampled subset of the population}. 
+
+\slide
+\textbf{Sample distribution}
+\begin{description}
+\item[sample mean ($\overline{y}$)] the mean of variable $y$ that we measure in \emph{one possible subset} of the target population
+\item[population variance ($s^2_y$)] the variance of $y$ that we measure in \emph{one possible subset} of the target population
+\end{description}
+
+Our sample mean is the \emph{estimate of the model for the entire population}. The model exists and, if we could measure the entire population, could derive the underlying ``true'' value. But since we can't do that, we rely our estimate from this one subset of the data. 
+
+But, remember when we get our data we are only seeing \emph{one possible subset} out of a combination of many, many more. Going back to the idea of our dataset of every possible sample, it would look like: 
+
+\begin{table}[!h]
+\footnotesize
+\begin{tabular}{lrrr}
+\multicolumn{4}{l}{\itshape Example dataset $\ldots$ } \\
+\textbf{Sample} & $\overline{y}$ & $s^2_y$ & $s_y$ \\\toprule
+Sample 1 & & & \\ \midrule
+Sample 2 & & & \\  \midrule
+Sample 3 & & & \\ \midrule
+Sample 4 & & & \\ \midrule
+$\vdots$ & & & \\ \midrule
+Sample N & & & \\ \bottomrule
+\end{tabular}
+\end{table}
+
+Each mean that we would get from each subset, or each sample, of the data would be its own estimate of the population mean. If we could identify every possible sample, we could write down the estimate of the population mean for each sample. In other words, what we are talking about is \emph{a sample of samples!}
+
+\section{Sampling Distributions}
+\subsection{Standard Errors}
+
+We call this ``sample of samples'' the ``sampling distribution''
+
+\concept{sampling distribution}{the characteristics of all possible samples from a target population}
+
+The mean of each sample, $\overline{y_j}$, will miss the mark of the true population mean, $\mu_y$, by some amount. It turns out, that if we take good samples, the differences between the sample means and the true mean will form a normal distribution. The variance of that distribution is called the \emph{sampling variance}.
+
+\concept{sampling variance}{the mean squared difference between sample means and the true population mean}
+
+If we take the square root of the sampling variance, we get the standard deviation of sample mean differences from the population mean, or the \emph{standard error}.
+
+\concept{standard error}{the standard deviation of differences between sample means and the population mean}
+
+\slide
+The standard error will be influenced by two values:
+\begin{enumerate}
+\item variation in the underlying population
+\item size of the samples ($\leftarrow$ notice the `s')
+\end{enumerate}
+
+The first value is relatively straightforward: the more that the population varies, the greater the chance that any sample will include values far away from the mean. 
+
+The second value is a little more complicated, so let's work through some examples. 
+
+From 2013 to 2016, the mean verbal reasoning score on the GRE was 149.97, with a standard deviation of 8.49.
+
+Let's say that our sample size equals the size of the target population. How much will our sample means deviate from the population mean? 
+
+None -- every sample will be of the entire population: the difference between every sample mean and the true population mean will be zero. This doesn't mean that there isn't variation, it just means that we capture all of the variation in every sample. 
+
+Let's say that our sample size equals 1. How much will our sample means deviate from the population mean? 
+
+The samples will have the same standard deviation as the entire population because we are basically just taking one person at a time from the population. If we do that, then the sample of samples will be the same thing as taking a sample of the population. 
+
+The bounds of the standard deviation of the sample means are: 
+\begin{itemize}
+\item 0 (when the sample size equals the population size)
+\item $\sigma$ when the sample size equals 1
+\end{itemize}
+
+Let's try this out with an example:
+
+Use R Shiny app: \url{https://mikebader.shinyapps.io/sampling_distribution/}
+
+We will take a series of realized samples from the underlying population, then we will keep track of the variation of the sample means from the population mean: 
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{rrr}
+{N} & $\mathbf{\overline{y}}$ & $\mathbf{\sqrt{V(\overline{y})}}$ \\ \toprule
+1 & 149.8 & 8.607 \\
+2 & 150.0 & 5.807 \\
+4 & 149.9 & 4.505 \\
+8 & 150.1 & 3.032 \\
+16 & 150.1 & 2.139 \\
+32 & 150.0 & 1.479 \\
+64 & 150.0 & 1.065 \\
+128 & 150.0 & 0.734 \\
+256 & 150.0 & 0.517 \\
+512 & 150.0 & 0.373 \\
+1,204 & 150.0 & 0.263 \\ \bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+Now that we have the table, we have a sense for how much each \emph{realized sample mean} differs from the \emph{population mean}. 
+
+What does this mean in practice? If we look at the last row, our samples of 1,204, then we see that 68\% of sample means will fall within $\pm$0.263 points of the underlying population mean and 95\% will fall within 2$\times$0.263=0.526 points of the true population mean. 
+
+Let's take the square root of 1,024. What does that equal? 32. Now divide the population standard deviation by the answer ${8.49}/{\sqrt{32}}=0.265$.
+
+Now take the square root of 256 (16). Now divide the population standard deviation by the answer ${8.49}/{\sqrt{256}}=0.531$.
+
+Now do the same for 64: ${8.49}/{\sqrt{64}}=1.061$.
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{rrrr}
+\textbf{N} & $\mathbf{\overline{y}}$ & $\mathbf{\sqrt{V(\overline{y})}}$ & $\mathbf{\sigma/\sqrt{N}}$ \\ \toprule
+1 & 149.8 & 8.607 & \\
+2 & 150.0 & 5.807 & \\
+4 & 149.9 & 4.505 & \\
+8 & 150.1 & 3.032 & \\
+16 & 150.1 & 2.139 & \\
+32 & 150.0 & 1.479 & \\
+64 & 150.0 & 1.065 & \textbf{1.061}\\
+128 & 150.0 & 0.734 & \\
+256 & 150.0 & 0.517 & \textbf{0.531} \\
+512 & 150.0 & 0.373 & \\
+1,204 & 150.0 & 0.263 & \textbf{0.263} \\ \bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+Now, let's use the formula that we have for standard errors and put that in the final column. As a reminder, the standard error equals: 
+
+\[ s.e. = \frac{\sigma}{\sqrt{N}} \]
+
+Here, $\sigma$ represents the true standard deviation of the underlying population. Filling out the table, we have: 
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{rrrrr}
+\textbf{N} & $\mathbf{\overline{y}}$ & $\mathbf{\sqrt{V(\overline{y})}}$ & $\mathbf{\sigma/\sqrt{N}}$ \\ \toprule
+1 & 149.8 & 8.607 & 8.490 \\
+2 & 150.0 & 5.807 & 6.003 \\
+4 & 149.9 & 4.505 & 4.245 \\
+8 & 150.1 & 3.032 & 3.002 \\
+16 & 150.1 & 2.139 & 2.123 \\
+32 & 150.0 & 1.479 & 1.501 \\
+64 & 150.0 & 1.065 & 1.061\\
+128 & 150.0 & 0.734 & 0.750 \\
+256 & 150.0 & 0.517 & 0.531 \\
+512 & 150.0 & 0.373 & 0.375 \\
+1,204 & 150.0 & 0.263 & 0.263 \\ \bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\concept{standard error}{standard deviation of all possible sample means that could be drawn from samples of size $N$ from the population}
+
+
+
+
+
+
+
+
+
+\subsection{Finite Population Correction}
+What if, instead of 1,000,000 people, our target population had 1,024 people in it? Clearly if we take samples of 1,023 out of 1,024, then each sample will have very little deviation from the true population mean. 
+
+To adjust that, we use the \emph{finite population correction} to account for the fact that we sample most of the population, which can be represented by the formula:
+
+\[ v(\overline{y})=\frac{1-f}{n}\sigma^2 \]
+
+where:
+\begin{description}\itemsep0pt
+\item[$v(\overline{y})$] variance of sample means
+\item[$f$] fraction of the population sampled
+\item[$n$] number of entities sampled
+\item[$\sigma^2$] population variance of $y$
+\end{description}
+
+Going back to our example of sampling 1,023 out of 1,024, we would plug the following into the formula:
+\vspace{-1em}
+
+\begin{align*}
+v(\overline{y}) = & \frac{1-\frac{1,023}{1,024}}{1,023}\sigma^2 \\
+= & \frac{0.00097}{1,023}\sigma^2 \\
+= & (9.546065\times 10^{-7})\sigma^2
+\end{align*}
+
+\subsection{Statistical Power}
+We often want to estimate what sample size we need to calculate a value within a band (interval) of the actual population mean. 
+
+We will use proportions because: 
+\begin{itemize}
+\item Most of your measures are proportions
+\item They can be calculated on the basis of a single number (the proportion) rather that two (mean and standard deviation)
+\end{itemize}
+
+To show the second point, let's walk through the math. We will start with our definition of variance: 
+
+\[ \sigma_y^2 = \frac{1}{N}\sum^N\left(y_i - \mu_y\right)^2 \]
+
+We can read this equation in words as: the variance of $y$ equals the mean of the squared errors of $y$. 
+
+If we have a value that can take on two different values, then we assign one to equal zero and one to equal one. Let's use the standard ``generic congressional ballot'' question asking which party people prefer controlling Congress. Let's assign people who respond that they want Democrats to control Congress to equal 1 and Republicans to equal 0. 
+
+The mean will equal the \emph{proportion who support Democrats}: 
+
+\[ \mu_y = \frac{1*\text{\# who support Democrats} + 0*\text{\# who support Republicans}}{\text{\# who support Democrats + \# who support Republicans}} \]
+
+Therefore $\mu_y = p_y$, or the proportion who support Democrats. We could, if we choose, assign those that want Republicans to control Congress to equal 1 and Democrats to equal 0. If we did that, then the proportion would equal $1-p$, or the value we just calculated. 
+
+Going back to our equation for variance, we can now substitute $p_y$ for $\mu_y$. 
+
+\[ \sigma_y^2 = \frac{1}{N}\sum^N\left(y_i - p_y\right)^2 \]
+
+Our data can take on only one of two values: 0 or 1. For that reason, we can rewrite our equation for those two values where $M$ equals the number of entities that take on the value of 1:
+
+\[ \sigma_y^2 = \frac{1}{N}\left[M\left(1 - p_y\right)^2 + (N-M)\left(0 - p_y\right)^2\right]  \]
+
+And we can rewrite the proportions, $p_y$ as the number of entities that take on a value of 1 over the count of entities (i.e., $\frac{M}{N}$): 
+
+\begin{equation*}
+\begin{array}{rclcr}
+\sigma_y^2 & = &\frac{1}{N} \left[M\left(1 - p_y\right)^2\right. &+& \left.(N-M)\left(0 - p_y\right)^2\right] \\
+& =& \frac{1}{N}  \left[M\left(1 - 2\frac{M}{N} + \frac{M^2}{N^2}\right)\right. &+& \left.N\left(\frac{M^2}{N^2}\right) -M\left(\frac{M^2}{N^2}\right)\right] \\
+& =& \frac{1}{N}  \left[\left(M - 2\frac{M^2}{N} + \frac{M^3}{N^2}\right)\right. &+& \left.\left(\frac{M^2}{N}\right) - \left(\frac{M^3}{N^2}\right)\right] \\
+& =& \frac{1}{N}  \left[M - \frac{M^2}{N}\right] && \\
+& =& \frac{1}{N}  \left[M\left( 1 - \frac{M}{N}\right)\right] && \\
+& =&  \frac{M}{N}\left( 1 - \frac{M}{N}\right) && \\
+& = &  p\left(1 - p\right) && 
+\end{array}
+\end{equation*}
+
+Okay, so now we know for sure that the variance of a proportion equals $p(1-p)$. How does that help us figure out what sample size we need? 
+
+Well, we can go back to our original equation of our sampling variance and then substitute in $p(1-p)$ for the variance:
+
+\begin{align*}
+v(\overline{y})& =\frac{1-f}{n}\sigma^2 \\
+& = \frac{1-f}{n}p(1-p)
+\end{align*}
+
+If we guess that the proportion is somewhere around 50\% support Democrats controlling Congress, then we estimate that the variance would equal $.5^2$ or 0.25. Let's assume that we are pulling from a population that is so large that the fraction of the population that we sample is effectively zero. We would have: 
+
+\[ v(\overline{y}) = \frac{1}{n}p(1-p) \]
+
+and we would want to solve for $n$: 
+
+\[ n = \frac{p(1-p)}{v(\overline{y})} \]
+
+The standard error equals the square root of the sampling variance: 
+
+\[ s.e. = \sqrt{v(\overline{y})} \]
+
+So we can rewrite the equation above as:
+
+\[ n = \frac{p(1-p)}{(s.e.)^2} \]
+
+Let's say that we want 95\% of our possible sample means (from the combination of all possible samples that we could draw) to fall within 1.5 percentage points of the true population proportion. The 95\% represents 2 standard errors, so each standard error would equal 0.75 of a percentage point, or 0.0075. Substituting that value into the equation with an estimated proportion of 50\%, we get: 
+
+\[ n = \frac{0.5(1-0.5)}{(0.0075)^2} = 4444.4\bar{4} \]
+
+If we have an infinitely large population, we would need to sample 4,445 people for 95\% of our sample proportions to end up within 1.5 percentage points of the true proportion support for Democrats in our population. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
