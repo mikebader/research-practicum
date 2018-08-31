@@ -3,13 +3,17 @@ title: "R Learning Guide"
 author: "Mike Bader"
 date: "February 2018"
 output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
   pdf_document:
     keep_tex: yes
     toc: true
     toc_depth: 3
   md_document:
     variant: markdown
-  html_document: default
+
 ---
 
 ```{r setup, include=FALSE}
@@ -167,8 +171,11 @@ As you go on this adventure, you will likely need help along the way. There are 
 :   is a blog with posts that cover tutorials and code for basic to advanced material
 
 
-```{r child="ch1_variables_and_data/RLearningGuide_variables_and_data.Rmd"}
+```{r child="ch1_variables_and_data/ch1_variables_and_data.Rmd"}
 ```
 
 ```{r child="ch2_descriptive_statistics/ch2_descriptive_statistics.Rmd"}
+```
+
+```{r child="ch3_variable_recoding/ch3_variable_recoding.R"}
 ```
