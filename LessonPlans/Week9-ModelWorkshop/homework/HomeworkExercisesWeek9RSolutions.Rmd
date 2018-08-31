@@ -1,0 +1,407 @@
+---
+title: "Solutions, Week 9"
+author: "Michael Bader"
+date: "April 2, 2018"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(digits = 2, nsmall=2)
+```
+
+We need to read the data and assign the data to an object. Remember to set your working directory, `setwd()` to the directory where the file is located. 
+
+I find it useful to remove all objects from the environment to make sure that I do not accidentally rely on an object that I have not explicitly created in the script. To do that, I use the `rm()` function (which stands for "remove"). 
+
+```{r reset_wd}
+rm(list=ls())
+setwd("~/work/Teaching/Courses/ResearchPracticum/LessonPlans/Week9-ModelWorkshop/homework")
+dcas <- read.csv("DCAS_2016_weighted.csv")
+```
+
+Now we may start working with the data. 
+
+## Question 5
+
+**Concepts**
+
+1. **Create a variable that combines two survey items**
+2. **Create a variable from a multiple-response item in a survey**
+3. **Create a single mutually exclusive and exhaustive variable from a multiple-response item in a survey**
+4. **Create a factor variable**
+5. **Use R shortcuts to improve accuracy and reduce typing** (advanced)
+
+The question asks us to construct racial/ethnic categories. We want a series of _exahustive and mutually exclusive categories_ that represent the racial and ethnic variation of respondents. Two questions record racial and ethnic identities: 
+
+> **Question 53:** Are you of Hispanic, Latino, or Spanish origin, 
+> such as Mexican, Puerto Rican or Cuban?
+>
+> Yes/No
+>
+> **Question 54:** Which of the following describes your race? _Mark all that apply._
+>
+> White; Black or African American; Asian or Asian American; Native American/American Indian/Alaskan Native; Native Hawaiian/Other Pacific Islander; Some other race (_specify_)
+
+Let's think through the logic of what we would like to do given the question. We want everyone to fall in one racial/ethnic category. A hint of where to start comes from the _Non-Hispanic_ part of the question. Notice that someone who identifies as _Hispanic_ can also identify with racial groups (because the government has treated Hispanic as an ethnicity rather than race). 
+
+We should think about which category has the second fewest exclusion criteria. That would be blacks, since anyone who identifies as black, as long as they do not also identify as Hispanic, would be considered black, regardless of what other choices they selected. 
+
+The next fewest would be Asian American or Pacific Islanders since they would be classified as such as long as they did not identify as Hispanic or black. Next would be other, and finally, whites would be those who did not identify as any race *except* white. We can (and should) list these characteristics on paper or in our script to remember the logic we should follow. That would look like: 
+
+1. Classify as Hispanics anyone who answered `q53` as 'Yes' **or** anyone who answers `q54` as "Hispanic or Hispanic-American"
+2. Classify as black anyone who answered `q54` as "Black or African-American" **and** was not already classified as Hispanic
+3. Classify as Asian/Pacific Islander anyone who answered `q54` as "Asian or Asian-American" **or** "Native Hawaiian/Other Pacific Islander" **and** was not already classified as Hispanic or black
+4. Classify as "other" anyone who did not answer `q53` as "Yes" **and** who did not answer `q54` as: 
+    * Hispanic or Hispanic-American **or**
+    * Black or African-American **or**
+    * Asian or Asian American **or** Native Hawaiian/Other Pacific Islander **or**
+    * White
+5. Classify as white anyone who answered `q54` as "White" and was not already classified
+
+We also need to remember that respondents could indicate multiple races on Question 54. That means, that we need to cycle through all possible combinations of racial groups on Question 54. You will note in the data that there are multiple variables for question 54: `q5401`, `q5402`,...`q5406`. This allows the people key-punching the responses to key answers for up to six different cells (no one in these data use more than 3). We should assume nothing about the order of those key punches and be sure to always cycle through those that might have responses.
+
+With all of that in mind, we can start coding our race variable!
+
+### Identifying Membership in Racial Categories
+
+If you look at the list above, it suggests a pretty complicated set of if/then decision rules. It would be really complicated to try to write each of those out for each variable. Instead, it would be better to create a series of five variables that record whether a respondent ever indicates the race/ethnicity in question (Latinx, black, Asian/Pacific Islander, white, other) and then code a final variable that implements the final step of if/then decisions.
+
+#### Hispanic
+
+Let's create a variable and set it to equal `hispanic` if `dcas$q53=='Yes'`:
+
+```{r hispanics}
+## IDENTIFY HISPANICS
+table(dcas$q53)
+dcas$hispanic <- dcas$q53=='Yes'
+dcas$hispanic[dcas$q53 %in% c('No Answer','Refused')] <- NA
+
+## Check the variable
+table(dcas$q53,dcas$hispanic,useNA='ifany')
+```
+
+The survey also allowed respondents the ability to answer "Hispanic or Hispanic-American" as one of the options for the race question (as the Census Bureau had planned to do for the 2020 Census under the Obama administration). Now comes the part where we need to cycle through all of the possible options. To do that we use the "or" operator, `|` which is called a "pipe" and you get by pressing Shift+\\.
+
+```{r hispanics_race}
+dcas$hispanic <- (dcas$hispanic==TRUE |
+                  dcas$q5401=='Hispanic or Hispanic-American' |
+                  dcas$q5402=='Hispanic or Hispanic-American' |
+                  dcas$q5403=='Hispanic or Hispanic-American' |
+                  dcas$q5404=='Hispanic or Hispanic-American' )
+
+## Check the variable
+table(dcas$q5401,dcas$q53,dcas$hispanic)
+# table(dcas$q5402,dcas$q5401,dcas$hispanic) ## Commented to supress long output
+```
+
+Great! One category down. Now anyone who identified as Latinx should be recorded with the value of `TRUE` in our new variable `dcas$hispanic`. 
+
+#### Black 
+
+Now, let's take a look at our next group, blacks. We want to classify anyone who identified as "Black or African American" as one of their racial identities in Question 54. To do that we will do the following: 
+
+```{r blacks}
+## IDENTIFY BLACKS
+dcas$black <- (dcas$q5401=='Black or African-American' |
+               dcas$q5402=='Black or African-American' |
+               dcas$q5403=='Black or African-American' |
+               dcas$q5404=='Black or African-American' )
+
+## Check the variable
+table(dcas$q5401,dcas$black)
+```
+
+We see when we tested the variable that we identified `r table(dcas$q5401,dcas$black)[9,1]` respondents as black who identified as white in the variable `q5401`. Let's see if they identified as black on the next mention in `q5402`: 
+
+```{r check_black}
+table(dcas[dcas$q5401!='White',c("q5402","black")])
+```
+
+Phew, all `r table(dcas[dcas$q5401=='White',c("q5402","black")])[2,1]` *also* identified as black. 
+
+Two down!
+
+#### Asian/Pacific Islander
+
+Now on to respondents who identified as Asian or Pacific Islander. In this case, we need to check if a respondent identified as either "Asian or Asian-American" **or** "Native Hawaiian/Other Pacific Islander"). Again, we will use the `|` operator to represent "or", but have two conditions for *each* variable in `q5401`...`q5046`. 
+
+```{r api}
+## IDENTIFY API
+## Asian OR Pacific Islander AND NOT Hispanic AND NOT black
+dcas$api <- (dcas$q5401=='Asian or Asian-American' | 
+                 dcas$q5401=='Native Hawaiian/Other Pacific Islander' |
+             dcas$q5402=='Asian or Asian-American' | 
+                 dcas$q5402=='Native Hawaiian/Other Pacific Islander' |
+             dcas$q5403=='Asian or Asian-American' | 
+                 dcas$q5403=='Native Hawaiian/Other Pacific Islander' )
+
+## Check variable
+table(dcas$q5401,dcas$api)
+table(dcas[
+    !(dcas$q5401=='Asian or Asian-American'| dcas$q5401=='Native Hawaiian/Other Pacific Islander'),
+    c("q5402","api")
+])
+table(dcas[
+    !(dcas$q5401=='Asian or Asian-American'| 
+          dcas$q5401=='Native Hawaiian/Other Pacific Islander'|
+          dcas$q5402=='Asian or Asian-American'| 
+          dcas$q5402=='Native Hawaiian/Other Pacific Islander'),
+    c("q5403","api")
+])
+```
+
+After both of those checks, we see that no one who identified as Asian or Asian American or Native Hawaiian/Other Pacific Islander has been coded as `TRUE` on the variable `dcas$api`. 
+
+#### Other
+
+Now we turn to the "other" category and code anyone who identified as either Native Aemerican/American Indian/Alaskan Native **or** "Some other race" as "other". 
+
+```{r other}
+## IDENTIFY OTHER
+## NOT 1-4 AND NOT NA on all race questions
+dcas$other <- (dcas$q5401=='Native American/American Indian/Alaska Native' |
+               dcas$q5401=='Some other race (specify):' |
+               dcas$q5402=='Native American/American Indian/Alaska Native' |
+               dcas$q5402=='Some other race (specify):' |
+               dcas$q5403=='Native American/American Indian/Alaska Native' |
+               dcas$q5403=='Some other race (specify):' 
+                )
+
+## Check variable
+table(dcas$q5401,dcas$other)
+table(dcas[
+    !(dcas$q5401=='Native American/American Indian/Alaska Native'| 
+      dcas$q5401=='Some other race (specify)'),
+     c("q5402","other")
+    ])
+table(dcas[
+    !(dcas$q5401=='Native American/American Indian/Alaska Native'| 
+      dcas$q5401=='Some other race (specify)' |
+      dcas$q5402=='Native American/American Indian/Alaska Native'| 
+      dcas$q5402=='Some other race (specify)'),
+     c("q5403","other")
+    ])
+```
+
+#### White
+
+As our last group, we will code anyone who identified as white. We will do the same thing that we have done before, classify those who answered "White" and then check the variable.
+
+```{r white}
+dcas$white <- (dcas$q5401=='White' |
+               dcas$q5402=='White' |
+               dcas$q5403=='White')
+table(dcas$q5401,dcas$white)
+table(dcas[dcas$q5401!='White',c("q5402","white")])
+```
+
+That last little bit may look like gibberish, but it means that the table has no values. That indicates that we classified everyone who considers themselves white. 
+
+### Classifying Race
+
+We now have a variable that indicates whether a respondent identifies as each racial group. We now need to put them together into a single variable using the logic that we described above. To do this, we will start with a variable to which we assign all missing (`NA`) values and then, one by one, apply our classification rules. 
+
+I have pasted the text of the list directly above the command that implements each inclusion criterion. Since we do this sequentially, we can restrict which values get classified to only those rows that are still missing on the race variable. In other words, because any person who has been classified as Hispanic cannot be in any of the other groups, they will have been classified in the first step of the process and the value will no longer equal `NA`. That makes the final variable a whole lot easier to create because we basically need to ask: should this person be classified in the group (yes if that group's racial indicator is `r TRUE`) and has the person already been classified (no if the `dcas$race` equals `r NA` rather than the value of another group)?
+
+```{r race_var}
+## CREATE RACE VARIABLE
+dcas$race <- NA
+
+# 1. Classify as Hispanics anyone who answered `q53` as 'Yes'
+# **or** anyone who answers `q54` as "Hispanic or Hispanic-American"
+dcas$race[dcas$hispanic] <- 'hispanic'
+
+# 2. Classify as black anyone who answered `q54` as "Black or 
+# African-American" **and** was not already classified as Hispanic
+dcas$race[dcas$black==TRUE & is.na(dcas$race)] <- 'black'
+
+# 3. Classify as Asian/Pacific Islander anyone who answered 
+# `q54` as "Asian or Asian-American" **or** "Native Hawaiian/
+# Other Pacific Islander" **and** was not already classified 
+# as Hispanic or black
+dcas$race[dcas$api==TRUE & is.na(dcas$race)] <- 'api'
+
+# 4. Classify as "other" anyone who did not answer `q53` as 
+# "Yes" **and** who did not answer `q54` as: 
+#     * Hispanic or Hispanic-American **or**
+#     * Black or African-American **or**
+#     * Asian or Asian American **or** Native Hawaiian/
+#       Other Pacific Islander **or**
+#     * White
+dcas$race[dcas$other==TRUE & is.na(dcas$race)] <- 'other'
+
+# 5. Classify as white anyone who answered `q54` as 
+# "White" and was not already classified
+dcas$race[dcas$white==TRUE & is.na(dcas$race)] <- 'white'
+
+## Check the variable against `dem.race`
+table(dcas$race,dcas$dem.race) ## There will be minor inconsistences
+```
+
+We did it!!![^differences]
+
+[^differences]: The minor differences you see were due to recoding the "Other" categories back into racial categories. 
+
+### Shortcuts
+You will notice that we type _a lot_. Not only does that bore us, but it also creates errors in our code (resulting, in part, from our boredom). Let's go over a couple of ways that we could reduce all of that typing. 
+
+The first is by setting some R variables to equal the text of the different categories. Instead of typing "Native American/American Indian/Alaskan Native" each time, for example, we could set a variable to equal that string. Then we only need to type the variable. Let's recreate the `dcas$other` using this idea. 
+
+We will assign the two options that get classified as "other" to two variables: `native` and `other_race`. Then you will see that our selection criteria get a whole lot easier to apply and to read. 
+
+```{r other_shortcut}
+native <- 'Native American/American Indian/Alaska Native'
+other_race <- 'Some other race (specify):'
+
+dcas$other2 <- (dcas$q5401==native | dcas$q5401==other_race |
+                dcas$q5402==native | dcas$q5402==other_race |
+                dcas$q5403==native | dcas$q5403==other_race 
+               )
+## Show that this is the same as the variable that we created above
+table(dcas$other,dcas$other2)
+```
+
+We just accomplished that with much less typing and allowed fewer chances for typos to seep into our classifications. 
+
+But, we can take this one step further. We can make it so that we do not have to copy-and-paste the values that we want selected at all. As I was trying to type this, for example, I frequently forgot to change `dcas$q5401` to `dcas$q5402` in the second row. We will use two tricks here and I will explain one at a time. 
+
+The first involves the function `paste0()`, which puts together items into strings without any spaces in between. If I typed `paste0('mike','bader')`, for example, I would get the string `r paste0('mike','bader')`. If you give the function a string _vector_, however, it will paste the string to each item in that vector. We will use this to create a string containing all of the variables in which racial identifications were stored. 
+
+```{r paste0}
+race_vars <- paste0("q540",c(1:6))
+race_vars
+```
+
+Pretty cool, huh? You might not think so, but remember how we select columns from R datasets. We can write a list of variable names, so `dcas[,c(race_vars)]` will now give us a dataset with the racial identification data _and nothing else_. 
+
+We will use this dark magic with our next function, `apply()`, which calculates a function over all rows or all columns (you have to tell it which one) of a given table or data frame. That means that we can ask R to look for a value across multiple columns at the same time. 
+
+To examine this, let's define a variable `dcas$native` first and then see how we can put everything together into a new variable for "other" racial classifications. 
+
+```{r apply_example}
+native <- 'Native American/American Indian/Alaska Native'
+race_vars <- paste0("q540",c(1:6))
+
+dcas$native <- apply(dcas[,race_vars],1,function(row){native %in% row})
+```
+
+What we did was subset the `dcas` data frame to include only the race columns (which we put as column names that we stored in the `race_var` variable). Then we took all of the items in the first dimension (the `1`), which are rows. Then, for each row, we defined a function that told R to look for the value "Native American/American Indian/Alaska Native" (which we stored in a variable `native` to avoid retyping it every time) in each row. If the function found that value in any of the race variables, it would return a value of `r TRUE`, otherwise it would return a value of `r FALSE`. 
+
+Now we can put that together with the people who identified as "Some other race" without adding much to recreate our `dcas$other` variable. 
+
+```{r other_apply}
+native <- 'Native American/American Indian/Alaska Native'
+other_race <- 'Some other race (specify):'
+race_vars <- paste0("q540",c(1:6))
+
+dcas$other3 <- (
+            apply(dcas[,race_vars],1,function(row){native %in% row}) |
+            apply(dcas[,race_vars],1,function(row){other_race %in% row}) 
+)
+
+table(dcas$other,dcas$other3)
+
+```
+
+And it all checks out. We have gone from the mess up above to this nice, elegant piece of code. You might want to try doing the same thing for all of the races and see if you can get the same values in the final race variable. 
+
+## Question 6 
+
+**Concepts**
+
+1. **Ordering categorical (factor) variable**
+2. **Creating summary statistics of ordered variables**
+
+The homework asks you to figure out how many respondents report that they are *at least* a littl afraid. This means adding across all responses that represent being at least a little afraid or more than a little afraid. Let's take a look at what respondents reported. We will, like before, create a new variable and assign it the values of the original variable (in this case, Question 41). 
+
+```{r describe_fear}
+dcas$fear.police <- dcas$q41
+table(dcas$fear.police)
+```
+
+Uh oh! We have a problem. One respondent wrote in "Don't Know" and another 28 respondents did not report an answer. Therefore, we are missing those answers, and our variable should reflect their missingness. To do that, we will use the `is.na()` function to set them to missing. 
+
+```{r na}
+is.na(dcas$fear.police) <- dcas$fear.police %in% c("Don't Know","No Answer")
+table(dcas$fear.police)
+```
+
+Great! But now we have another problem: the answers represent an order but the variable categories don't reflect that order (R ordered the responses alphabetically, so "A lot" follows "A little"). Let's change that my using the `ordered()` function, that sets the order of the different categorical levels of the variable.  
+
+```{r order_fear}
+dcas$fear.police <- ordered(dcas$fear.police,
+                      levels=c("Not at all","A little","Somewhat","A lot"))
+table(dcas$fear.police)
+```
+
+Good! Now we have ordered our responses and only have those responses for which a respondent gave an answer to the question. Now we need to answer the question
+
+> Calculate the proportion of *all respondents* who say that 
+> they are at least a little afraid that they will be targeted 
+> by the police for questioning or arrest
+
+Notice two words in there: *at least* a littl afraid. That means that we need to take all of the values for respondents who express that fear affects their daily lives a little, somewhat, or a lot. We could just calculate the sum over these three categories and divide by the sum of all responses (that would give us the right answer), or we could let R do the work for us. 
+
+```{r calc_fear}
+fear_tbl <- table(dcas$fear.police)
+fear_props <- prop.table(fear_tbl)
+sum(fear_props[-1])
+```
+
+Let's recap what we did: 
+
+`fear <- table(dcas$fear.police)`
+
+: We calculated the same table, but rather than report it to the console, we saved the table as its own object and assigned it to the name `fear_tbl` (if you type `fear_tbl` in the console, you will get the same result as `table(dcas$fear.police)` from above)
+
+`fear_props <- prop.table(fear)`
+
+: This calculates the proportion of all respondents falling in each category of the table (type `fear_props` in the console to see the values)
+
+`sum(fear_props[-1])`
+
+: This sums across all cells that are not the first cell in the table. That gives you the sum of the proportion who answered "a little" (`fear_props[2]`: `r fear_props[2]`), "somewhat" (`fear_props[3]`: `r fear_props[3]`), and "a lot" (`fear_props[4]`: `r fear_props[4]`) or 
+
+$$`r fear_props[2]` + `r fear_props[3]` + `r fear_props[4]` = `r sum(fear_props[-1])`$$.
+
+Therefore, fear of questioning or arrest by the police affected `r I(round(sum(fear_props[-1]),2)*100)`% of respondents' daily lives at least a little bit. 
+
+Let's now use the same concept to look at a table by racial groups. We have our variable for race, `dcas$dem.race` and our variable for the fear of police question or arrest `dcas$fear.police`. We can use what we learned above about tables to simplify our output. We could create a two-way table of race by fear (to make it easier to read, I set R to report only two digits): 
+
+```{r fear_race_table, digits=2}
+fear_race_tbl <- table(dcas$dem.race,dcas$fear.police)
+fear_race_props <- prop.table(fear_race_tbl)
+fear_race_props
+```
+
+That gives us a 4x4 table with the proportion of respondents in each *cell*, but that's not what we want. We want to know the proportion of each racial group that falls in each response category. To do that, we have to tell R that we want the proportions *by row*, or by the first dimension (we count rows before we count columns). To fix that we would do the following: 
+
+```{r fear_race_table_2, digits=2}
+fear_race_props <- prop.table(fear_race_tbl,1)
+fear_race_props
+```
+
+Much better! Now we have the proportions of each racial group identifying how much fear affects their everyday lives.[^presentation] Again, you could sum columns 2-4 for each row of the table to find out the proportion of each racial group that says that fear affects their daily lives at least a little, or you can have R do it for you. This time we will use the `apply()` function. The `apply()` function takes three parameters: 1) the data (in this case it will be a table), the dimension along which to do *apply* the same function over and over, and 3) the function that should be applied over and over (in this case by rows). That means that we would have `apply(fear_race_props[,-1],1,sum)`: 
+
+1. `fear_race_props[,-1]`: all rows of the table `fear_race_props` and every column that is not the first column
+2. `1`: along the first dimension (rows)
+3. `sum`: and we want to sum across each row
+
+[^presentation]: Note that you could use this table (with proper rounding, etc.) as the descriptive table for a bivariate analysis in a paper or report. 
+
+```{r fear_little}
+apply(fear_race_props[,-1],1,sum)
+
+```
+
+To recap, we: 
+
+1. Cleaned the variable to get rid of missing data
+2. Ordered the categories as appropriate in the variable
+3. Summed across cells in the proportion table to get answers of "a little" or more
+
+Now try to apply those same concepts when you calculate the values for each racial group. 
+
